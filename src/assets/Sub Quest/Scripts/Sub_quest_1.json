@@ -1,0 +1,145 @@
+{
+  "quest_id": "sq_001_the_village",
+  "quest_name": "The Scholar's Beacon",
+  "start_scene": "scene_1",
+  "scenes": {
+    "scene_1": {
+      "type": "intro",
+      "display": {
+        "image": "village.png",
+        "narration_vi": "Bạn đặt chân đến một ngôi làng nhỏ thanh bình nằm ven thung lũng. Nơi đây dường như biệt lập với thế giới xô bồ bên ngoài, nhưng ẩn chứa những câu chuyện chưa ai kể.",
+        "narration_en": "You arrive at a peaceful small village nestled by the valley. A place seemingly isolated from the bustling world, yet holding untold stories."
+      },
+      "navigation": {
+        "next_scene": "scene_2"
+      }
+    },
+    "scene_2": {
+      "type": "interaction",
+      "npc": {
+        "id": "npc_mayor",
+        "name_vi": "Trưởng làng",
+        "name_en": "Village Mayor"
+      },
+      "display": {
+        "image": "village_mayor_1.png",
+        "initial_dialogue_vi": "Ngôi làng này cẩn thận với khách. Hãy nói cho tôi biết tại sao tôi nên cho cậu ở lại một đêm.",
+        "initial_dialogue_en": "This village is careful with strangers. Tell me why I should let you stay one night."
+      },
+      "logic": {
+        "check_type": "persuasion_check",
+        "player_action_required": "Write a short English message to introduce yourself and ask to stay one night.",
+        "outcomes": {
+          "on_fail": {
+            "target_scene": "end_failure",
+            "npc_response_vi": "Câu trả lời của cậu chưa đủ thật. Rời khỏi làng trước khi trời tối.",
+            "npc_response_en": "Your answer does not sound honest. Leave the village before night."
+          },
+          "on_success": {
+            "target_scene": "scene_3",
+            "npc_response_vi": "Được rồi, cậu có thể ở lại. Giúp tôi nói chuyện với một cô bé đang muốn bỏ học.",
+            "npc_response_en": "Okay, you may stay. Please help a girl in the village who wants to stop studying."
+          }
+        }
+      }
+    },
+    "scene_3": {
+      "type": "intro",
+      "display": {
+        "image": "girl_1.png",
+        "narration_en": "You find the girl's house at the edge of the village. She looks up as you enter."
+      },
+      "navigation": {
+        "next_scene": "scene_3_meet"
+      }
+    },
+    "scene_3_meet": {
+      "type": "intro",
+      "display": {
+        "image": "girl_1.png",
+        "narration_en": "Elena: 'Oh... hello traveler. I am Elena, an apprentice here.'"
+      },
+      "navigation": {
+        "next_scene": "scene_3_inquiry"
+      }
+    },
+    "scene_3_inquiry": {
+      "type": "quest_core",
+      "npc": {
+        "id": "npc_elena",
+        "name": "Elena",
+        "role": "Apprentice",
+        "personality": "Melancholic, insecure, but deeply passionate about knowledge",
+        "background": "A rural girl who dreams of academia. Comes from a poor family, balanced hard labor and studying but failed her exams by just one point."
+      },
+      "display": {
+        "image": "girl_1.png",
+        "initial_greeting_en": "Elena is at her desk. She is quiet. What do you want to ask her?"
+      },
+      "tip_en": "Tip: Ask simple questions about her life, school, family, or exams. Click 'Hear Elena's Problem' when you are ready.",
+      "phases": {
+        "inquiry_phase": {
+          "status": "active",
+          "description": "Player chats with Elena freely to uncover clues before giving final advice."
+        },
+        "resolution_phase": {
+          "trigger_scene": "scene_3_resolution"
+        }
+      }
+    },
+    "scene_3_resolution": {
+      "type": "interaction",
+      "npc": {
+        "id": "npc_elena",
+        "name": "Elena",
+        "role": "Apprentice",
+        "personality": "Melancholic, insecure, but deeply passionate about knowledge",
+        "background": "A rural girl who dreams of academia. Comes from a poor family, balanced hard labor and studying but failed her exams by just one point."
+      },
+      "display": {
+        "image": "girl_1.png",
+        "initial_dialogue_en": "I studied hard and still failed. I feel tired and sad. Should I stop trying?"
+      },
+      "logic": {
+        "player_action_required": "Write a kind English response to help Elena feel better and keep studying.",
+        "dynamic_scoring": {
+          "base_score": 0,
+          "min_passing_score": 50,
+          "max_score": 100
+        }
+      }
+    },
+    "end_failure": {
+      "type": "end_game",
+      "display": {
+        "image": "village_mayor_2.png",
+        "narration_vi": "Bạn bị trục xuất khỏi làng. Nhiệm vụ thất bại.",
+        "narration_en": "You were banished from the village. Mission Failed."
+      }
+    },
+    "end_dismissed": {
+      "type": "end_game",
+      "display": {
+        "image": "girl_1.png",
+        "narration_vi": "Elena cảm thấy bị xúc phạm bởi câu trả lời của bạn. Cô ấy đuổi bạn ra ngoài. Nhiệm vụ thất bại.",
+        "narration_en": "Elena felt insulted by your response. She kicked you out. Mission Failed."
+      }
+    },
+    "end_half_success": {
+      "type": "end_game",
+      "display": {
+        "image": "girl_2.png",
+        "narration_vi": "Elena mỉm cười cay đắng, cảm ơn sự sáo rỗng của bạn rồi mời bạn rời đi. Bạn hoàn thành 50% nhiệm vụ.",
+        "narration_en": "Elena smiles bitterly, thanks you for the clichés, and asks you to leave. You completed 50% of the mission."
+      }
+    },
+    "end_perfect_success": {
+      "type": "end_game",
+      "display": {
+        "image": "girl_3.png",
+        "narration_vi": "Lời nói của bạn thắp lên tia sáng trong đôi mắt Elena. Cô quyết định không từ bỏ. Nhiệm vụ hoàn thành xuất sắc!",
+        "narration_en": "Your words reignited the spark in Elena's eyes. She decides to persevere. Mission Completed Successfully!"
+      }
+    }
+  }
+}

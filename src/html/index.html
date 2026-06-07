@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Fantasy - Game Hub</title>
+    <meta name="description" content="Manage your adventure, explore dungeons, embark on story mode quests, and view side quests in English Fantasy.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@300;400;500;600;700;800&family=MedievalSharp&display=swap" rel="stylesheet">
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Adjustments for shell integration */
+        .content-panel-container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg-main);
+        }
+        #content-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+        }
+        .profile-panel {
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 20px;
+            right: 0;
+            width: 400px;
+            height: 1078px;
+            max-height: 1078px;
+            background: rgba(10, 12, 22, 0.96);
+            border-left: 1px solid rgba(255,255,255,0.12);
+            box-shadow: -24px 0 80px rgba(0,0,0,0.45);
+            border-top-left-radius: 24px;
+            border-bottom-left-radius: 24px;
+            overflow: hidden;
+            z-index: 1000;
+        }
+        .profile-panel.hidden {
+            display: none;
+        }
+        .profile-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding: 0.85rem 1rem;
+            background: rgba(6, 8, 16, 0.9);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .profile-close-btn {
+            background: rgba(255,255,255,0.08);
+            border: none;
+            color: #fff;
+            border-radius: 999px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .profile-close-btn:hover {
+            background: rgba(255,255,255,0.18);
+        }
+        .profile-panel-title {
+            color: #fff;
+            font-size: 0.95rem;
+            letter-spacing: 0.02em;
+        }
+        .profile-panel iframe {
+            width: 100%;
+            height: calc(100% - 64px);
+            border: none;
+            background: transparent;
+        }
+        body.profile-open .app-layout {
+            margin-right: 400px;
+        }
+        /* Confirmation Modal CSS */
+        .confirm-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+        .confirm-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .confirm-modal-box {
+            background: #0f172a;
+            border: 2px solid rgba(239, 68, 68, 0.4);
+            border-radius: 24px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 35px rgba(239, 68, 68, 0.2);
+            transform: scale(0.9);
+            transition: transform 0.25s ease;
+        }
+        .confirm-modal-overlay.active .confirm-modal-box {
+            transform: scale(1);
+        }
+        .confirm-modal-icon {
+            color: #ef4444;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+        .confirm-modal-title {
+            font-family: 'MedievalSharp', 'Cinzel', serif;
+            color: #fff;
+            font-size: 1.5rem;
+            margin: 0 0 0.5rem 0;
+        }
+        .confirm-modal-desc {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 0 0 1.5rem 0;
+        }
+        .confirm-modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .confirm-modal-btn {
+            padding: 0.75rem 1.75rem;
+            border-radius: 999px;
+            font-family: 'MedievalSharp', 'Cinzel', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+        .confirm-modal-btn.btn-retreat {
+            background: #dc2626;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+        .confirm-modal-btn.btn-retreat:hover {
+            background: #ef4444;
+            transform: translateY(-1px);
+        }
+        .confirm-modal-btn.btn-retreat:active {
+            transform: translateY(1px);
+        }
+        .confirm-modal-btn.btn-cancel {
+            background: #1e293b;
+            color: #cbd5e1;
+            border: 1px solid #334155;
+        }
+        .confirm-modal-btn.btn-cancel:hover {
+            background: #334155;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+        .confirm-modal-btn.btn-cancel:active {
+            transform: translateY(1px);
+        }
+    </style>
+</head>
+<body class="bg-dark text-light font-sans min-h-screen flex flex-col overflow-hidden">
+    <!-- Top Header -->
+    <header class="app-header" id="main-header">
+        <div class="header-left cursor-pointer" onclick="loadPage('dashboard.html')">
+            <img src="../assets/images/logo/screen.png" alt="English Fantasy Logo" class="game-logo" id="logo-img">
+            <span class="game-title font-medieval text-glow">English Fantasy</span>
+        </div>
+        
+        <!-- Resource and Stat Bar -->
+        <div class="header-center stats-bar">
+            <div class="stat-item" id="gold-stat">
+                <span class="material-symbols-outlined icon-gold">monetization_on</span>
+                <span class="stat-value">0</span>
+            </div>
+            <div class="stat-item" id="gem-stat">
+                <span class="material-symbols-outlined icon-gem">diamond</span>
+                <span class="stat-value">0</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="xp-container" id="xp-stat-container">
+                <span class="font-medieval level-badge">LVL 1</span>
+                <div class="xp-bar-outer">
+                    <div class="xp-bar-inner xp-glow" style="width: 0%;"></div>
+                </div>
+                <span class="xp-text">0 / 100 XP</span>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <div class="player-profile cursor-pointer" id="player-profile-widget" onclick="openProfilePanel('profile.html')">
+                <div class="player-info text-right">
+                    <span class="player-name font-medieval">Chuunibyou</span>
+                    <span class="player-class"></span>
+                </div>
+                <div class="avatar-wrapper">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='30' r='20' fill='%23c6a94e'/%3E%3Cpath d='M 30 50 Q 30 70 50 75 Q 70 70 70 50' fill='%238b7d6b'/%3E%3Ccircle cx='40' cy='25' r='3' fill='%232c2c2c'/%3E%3Ccircle cx='60' cy='25' r='3' fill='%232c2c2c'/%3E%3C/svg%3E" alt="Player Avatar" class="player-avatar" id="avatar-img">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="app-layout flex-1 flex overflow-hidden">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar-nav" id="main-sidebar">
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" id="nav-dashboard" onclick="loadPage('dashboard.html'); return false;">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="nav-text font-medieval">Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" id="nav-dungeon" onclick="loadPage('dungeon.html'); return false;">
+                    <span class="material-symbols-outlined">map</span>
+                    <span class="nav-text font-medieval">Dungeon Map</span>
+                </a>
+                <a href="#" class="nav-item" id="nav-subquest" onclick="loadPage('sub_quest.html'); return false;">
+                    <span class="material-symbols-outlined">task</span>
+                    <span class="nav-text font-medieval">Sub Quest</span>
+                </a>
+
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item sign-out" id="nav-logout" onclick="handleLogout(); return false;">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="nav-text font-medieval">Leave Realm</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Content Panel -->
+        <main class="main-content flex-1 overflow-hidden">
+            <div class="content-panel-container">
+                <iframe id="content-frame" src="dashboard.html" title="Realm Content Panel"></iframe>
+            </div>
+        </main>
+        <aside id="profile-panel" class="profile-panel hidden" aria-hidden="true">
+            <div class="profile-panel-header">
+                <span class="profile-panel-title font-medieval">Character Profile</span>
+                <button type="button" class="profile-close-btn" onclick="closeProfilePanel()" aria-label="Close profile panel">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <iframe id="profile-frame" src="" title="Profile Panel"></iframe>
+        </aside>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirm-modal" class="confirm-modal-overlay" aria-hidden="true">
+        <div class="confirm-modal-box">
+            <span class="material-symbols-outlined confirm-modal-icon">warning</span>
+            <h3 class="confirm-modal-title">Retreat from Battle?</h3>
+            <p class="confirm-modal-desc">If you retreat, your current battle progress will be lost.</p>
+            <div class="confirm-modal-actions">
+                <button type="button" class="confirm-modal-btn btn-retreat" id="confirm-retreat-btn">Retreat</button>
+                <button type="button" class="confirm-modal-btn btn-cancel" id="confirm-cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Nav Bar (Bottom) -->
+    <nav class="mobile-nav" id="bottom-nav">
+        <a href="#" class="mobile-nav-item active" id="mobile-nav-dashboard" onclick="loadPage('dashboard.html'); return false;">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="mobile-text">Dashboard</span>
+        </a>
+        <a href="#" class="mobile-nav-item" id="mobile-nav-dungeon" onclick="loadPage('dungeon.html'); return false;">
+            <span class="material-symbols-outlined">map</span>
+            <span class="mobile-text">Dungeon</span>
+        </a>
+        <a href="#" class="mobile-nav-item" id="mobile-nav-inventory" onclick="return false;">
+            <span class="material-symbols-outlined">backpack</span>
+            <span class="mobile-text">Items</span>
+        </a>
+    </nav>
+
+    <!-- SPA logic script -->
+    <script>
+        const API_BASE_URL = 'http://localhost:3000/api';
+
+        // Session check: Redirect to login if not authenticated
+        let userAccount = JSON.parse(localStorage.getItem('userAccount'));
+        
+        if (!userAccount) {
+            window.location.href = 'login.html';
+        } else {
+            // Fetch profile data from API on start to sync stats
+            fetch(`${API_BASE_URL}/profile/${userAccount.id_account}`)
+            .then(res => {
+                if (!res.ok) throw new Error('Failed to fetch profile.');
+                return res.json();
+            })
+            .then(data => {
+                if (data.profile) {
+                    localStorage.setItem('userProfile', JSON.stringify(data.profile));
+                    localStorage.setItem('playerLevel', data.profile.level_id);
+                    localStorage.setItem('playerXp', data.profile.current_xp);
+                    localStorage.setItem('unlockedFloors', data.profile.floor_unlocked);
+                    updateXPBar();
+                }
+            })
+            .catch(err => {
+                console.error("Profile sync error:", err);
+            });
+
+            // Update character name and stats dynamically
+            document.addEventListener('DOMContentLoaded', () => {
+                const playerNameEl = document.querySelector('.player-name');
+                if (playerNameEl && userAccount.username) {
+                    playerNameEl.textContent = userAccount.username;
+                }
+                updateXPBar();
+            });
+        }
+
+        function updateXPBar() {
+            const currentLvl = parseInt(localStorage.getItem('playerLevel')) || 1;
+            const currentXp = parseInt(localStorage.getItem('playerXp')) || 0;
+            const xpLevels = {
+                1: 100,
+                2: 300,
+                3: 500,
+                4: 750,
+                5: 1000
+            };
+            const requiredXp = xpLevels[currentLvl] || 1000;
+            
+            const lvlBadge = document.querySelector('.level-badge');
+            if (lvlBadge) lvlBadge.textContent = `LVL ${currentLvl}`;
+            
+            const xpText = document.querySelector('.xp-text');
+            if (xpText) xpText.textContent = `${currentXp} / ${requiredXp} XP`;
+            
+            const xpBarInner = document.querySelector('.xp-bar-inner');
+            if (xpBarInner) {
+                const percentage = Math.min(100, (currentXp / requiredXp) * 100);
+                xpBarInner.style.width = `${percentage}%`;
+            }
+        }
+        window.updateXPBar = updateXPBar;
+
+        // Listen for XP updates from battle.html (runs inside iframe)
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'xpUpdated') {
+                localStorage.setItem('playerXp', event.data.new_xp);
+                localStorage.setItem('playerLevel', event.data.new_level);
+                updateXPBar();
+            }
+        });
+
+        function showBattleRetreatConfirmation(onConfirm) {
+            const confirmModal = document.getElementById('confirm-modal');
+            if (!confirmModal) return;
+            confirmModal.classList.add('active');
+
+            const retreatBtn = document.getElementById('confirm-retreat-btn');
+            const cancelBtn = document.getElementById('confirm-cancel-btn');
+
+            const handleRetreat = () => {
+                confirmModal.classList.remove('active');
+                cleanupListeners();
+                onConfirm();
+            };
+
+            const handleCancel = () => {
+                confirmModal.classList.remove('active');
+                cleanupListeners();
+            };
+
+            const cleanupListeners = () => {
+                retreatBtn.removeEventListener('click', handleRetreat);
+                cancelBtn.removeEventListener('click', handleCancel);
+            };
+
+            retreatBtn.addEventListener('click', handleRetreat);
+            cancelBtn.addEventListener('click', handleCancel);
+        }
+
+        // Expose function to iframe (e.g. battle.html)
+        window.confirmBattleRetreat = function(onConfirm) {
+            showBattleRetreatConfirmation(onConfirm);
+        };
+
+        function handleLogout() {
+            const iframe = document.getElementById('content-frame');
+            if (iframe && iframe.contentWindow) {
+                try {
+                    const currentUrl = iframe.contentWindow.location.href;
+                    if (currentUrl.includes('battle.html')) {
+                        showBattleRetreatConfirmation(() => {
+                            localStorage.removeItem('userAccount');
+                            window.location.href = 'login.html';
+                        });
+                        return;
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+            localStorage.removeItem('userAccount');
+            window.location.href = 'login.html';
+        }
+
+        function loadPage(url) {
+            const iframe = document.getElementById('content-frame');
+            
+            // Check if we are in battle.html and transitioning away
+            if (iframe && iframe.contentWindow) {
+                try {
+                    const currentUrl = iframe.contentWindow.location.href;
+                    if (currentUrl.includes('battle.html') && !url.includes('battle.html')) {
+                        showBattleRetreatConfirmation(() => {
+                            iframe.src = url;
+                            syncMenuHighlight(url);
+                        });
+                        return;
+                    }
+                } catch (e) {
+                    console.error("Error checking battle state:", e);
+                }
+            }
+
+            if (iframe) {
+                iframe.src = url;
+            }
+            syncMenuHighlight(url);
+        }
+
+        function syncMenuHighlight(url) {
+            // Sync menu highlighting
+            document.querySelectorAll('.nav-item, .mobile-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            if (url.includes('dashboard.html')) {
+                document.getElementById('nav-dashboard').classList.add('active');
+                document.getElementById('mobile-nav-dashboard').classList.add('active');
+            } else if (url.includes('dungeon.html')) {
+                document.getElementById('nav-dungeon').classList.add('active');
+                document.getElementById('mobile-nav-dungeon').classList.add('active');
+            } else if (url.includes('sub_quest.html')) {
+                document.getElementById('nav-subquest').classList.add('active');
+            }
+        }
+
+        function openProfilePanel(url) {
+            const profilePanel = document.getElementById('profile-panel');
+            const profileFrame = document.getElementById('profile-frame');
+            const contentFrame = document.getElementById('content-frame');
+            if (profileFrame) {
+                profileFrame.src = url;
+            }
+            if (profilePanel) {
+                profilePanel.classList.remove('hidden');
+            }
+            document.body.classList.add('profile-open');
+            // Notify dashboard iframe that profile is open
+            if (contentFrame && contentFrame.contentWindow) {
+                contentFrame.contentWindow.postMessage({type: 'profileOpened'}, '*');
+            }
+        }
+
+        function closeProfilePanel() {
+            const profilePanel = document.getElementById('profile-panel');
+            const profileFrame = document.getElementById('profile-frame');
+            const contentFrame = document.getElementById('content-frame');
+            if (profilePanel) {
+                profilePanel.classList.add('hidden');
+            }
+            if (profileFrame) {
+                profileFrame.src = '';
+            }
+            document.body.classList.remove('profile-open');
+            // Notify dashboard iframe that profile is closed
+            if (contentFrame && contentFrame.contentWindow) {
+                contentFrame.contentWindow.postMessage({type: 'profileClosed'}, '*');
+            }
+        }
+    </script>
+</body>
+</html>

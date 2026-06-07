@@ -1,0 +1,500 @@
+[
+    {
+        "original": "What do you do to get rid of stress?",
+        "vietnamese": "Bạn thường làm gì để giải tỏa căng thẳng?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What three words best describe you?",
+        "vietnamese": "Ba từ nào mô tả đúng nhất về con người bạn?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What would be your perfect weekend?",
+        "vietnamese": "Một ngày cuối tuần hoàn hảo đối với bạn sẽ như thế nào?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What are you going to do this weekend?",
+        "vietnamese": "Cuối tuần này bạn có kế hoạch làm gì không?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What's your favorite way to waste time?",
+        "vietnamese": "Cách giết thời gian yêu thích của bạn là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Do you have any pets? What are their names?",
+        "vietnamese": "Bạn có nuôi thú cưng không? Chúng tên là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What did you do last weekend?",
+        "vietnamese": "Cuối tuần trước bạn đã làm gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What did you do on your last vacation?",
+        "vietnamese": "Bạn đã làm gì trong kỳ nghỉ gần đây nhất?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What do you do when you hang out with your friends?",
+        "vietnamese": "Bạn thường làm gì khi đi chơi với bạn bè?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Who is your oldest friend? Where did you meet them?",
+        "vietnamese": "Ai là người bạn lâu năm nhất của bạn? Bạn gặp họ ở đâu?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What were you really into when you were a kid?",
+        "vietnamese": "Hồi còn nhỏ bạn từng đặc biệt thích cái gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "If you could have any animal as a pet, what would it be?",
+        "vietnamese": "Nếu có thể nuôi bất kỳ con vật nào làm thú cưng, bạn sẽ chọn con gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Are you a very organized person?",
+        "vietnamese": "Bạn có phải là một người sống rất ngăn nắp không?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Who in your life brings you the most joy?",
+        "vietnamese": "Ai là người mang lại cho bạn nhiều niềm vui nhất trong cuộc sống?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Where do you spend most of your free time?",
+        "vietnamese": "Bạn thường dành hầu hết thời gian rảnh của mình ở đâu?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What's your favorite season? Why?",
+        "vietnamese": "Bạn thích mùa nào nhất trong năm? Tại sao?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What do you bring with you everywhere you go?",
+        "vietnamese": "Vật dụng nào bạn luôn mang theo bên mình mọi lúc mọi nơi?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "How much time do you spend on the internet?",
+        "vietnamese": "Một ngày bạn dành khoảng bao nhiêu thời gian để lướt internet?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is your favorite holiday?",
+        "vietnamese": "Ngày lễ yêu thích nhất trong năm của bạn là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is your favorite TV show?",
+        "vietnamese": "Chương trình truyền hình hoặc bộ phim truyền hình yêu thích của bạn là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What's your favorite movie genre?",
+        "vietnamese": "Thể loại phim yêu thích của bạn là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What's the best movie you have seen recently?",
+        "vietnamese": "Bộ phim hay nhất mà bạn xem dạo gần đây là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Do you like horror movies?",
+        "vietnamese": "Bạn có thích xem phim kinh dị không?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What kind of music do you listen to?",
+        "vietnamese": "Bạn thường nghe thể loại nhạc nào?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "When do you usually listen to music?",
+        "vietnamese": "Bạn thường nghe nhạc vào những lúc nào?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Who is your favorite singer or band?",
+        "vietnamese": "Ca sĩ hoặc nhóm nhạc yêu thích của bạn là ai?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Do you like reading books? What was the last book you read?",
+        "vietnamese": "Bạn có thích đọc sách không? Cuốn sách gần nhất bạn đọc là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is your favorite video game?",
+        "vietnamese": "Trò chơi điện tử (game) yêu thích của bạn là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What cartoon did you love watching when you were a child?",
+        "vietnamese": "Bộ phim hoạt hình nào bạn yêu thích nhất khi còn nhỏ?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Do you like listening to podcasts?",
+        "vietnamese": "Bạn có sở thích nghe podcast không?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What's the best concert you have ever been to?",
+        "vietnamese": "Buổi hòa nhạc hoặc đêm nhạc trực tiếp tuyệt nhất bạn từng tham gia là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What's your favorite food?",
+        "vietnamese": "Món ăn yêu thích nhất của bạn là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Do you like cooking? What can you cook well?",
+        "vietnamese": "Bạn có thích nấu ăn không? Bạn nấu ngon nhất món gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is your favorite restaurant around here?",
+        "vietnamese": "Nhà hàng hoặc quán ăn yêu thích của bạn ở quanh đây là quán nào?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What's your favorite dessert?",
+        "vietnamese": "Món tráng miệng yêu thích của bạn là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is your favorite drink?",
+        "vietnamese": "Thức uống yêu thích của bạn là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What's the best breakfast food?",
+        "vietnamese": "Món ăn sáng tuyệt nhất đối với bạn là món gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Do you like spicy food?",
+        "vietnamese": "Bạn có ăn được đồ cay không?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is a food that you really dislike?",
+        "vietnamese": "Món ăn nào mà bạn cực kỳ ghét hoặc không thể ăn được?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Where would you like to travel next?",
+        "vietnamese": "Điểm đến du lịch tiếp theo bạn muốn đi là nơi nào?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Have you traveled to any other countries?",
+        "vietnamese": "Bạn đã từng đi du lịch nước ngoài chưa?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is the most beautiful place you have ever been to?",
+        "vietnamese": "Nơi đẹp nhất mà bạn từng đặt chân đến là nơi nào?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What's the longest trip you've ever taken?",
+        "vietnamese": "Chuyến đi dài ngày hoặc xa nhất bạn từng đi là chuyến nào?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What do you usually pack first when you travel?",
+        "vietnamese": "Bạn thường sắp xếp món đồ nào vào hành lý đầu tiên khi đi du lịch?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Do you like taking photos when you travel?",
+        "vietnamese": "Bạn có thích chụp ảnh khi đi du lịch không?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is the best city you have ever visited?",
+        "vietnamese": "Thành phố tuyệt vời nhất bạn từng đến thăm là thành phố nào?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is your favorite app on your phone?",
+        "vietnamese": "Ứng dụng yêu thích nhất trên điện thoại của bạn là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Could you live without your phone for a week?",
+        "vietnamese": "Bạn có thể sống mà không dùng điện thoại trong vòng một tuần không?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is the most useful website you know?",
+        "vietnamese": "Trang web hữu ích nhất mà bạn biết là trang nào?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What technology could you not live without?",
+        "vietnamese": "Công nghệ nào mà bạn cảm thấy mình không thể sống thiếu nó?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "How old were you when you got your first phone?",
+        "vietnamese": "Bạn bao nhiêu tuổi thì có chiếc điện thoại đầu tiên?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Do you buy things online often?",
+        "vietnamese": "Bạn có thường xuyên mua hàng trực tuyến (online) không?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is your favorite social media platform?",
+        "vietnamese": "Nền tảng mạng xã hội yêu thích nhất của bạn là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is your dream job?",
+        "vietnamese": "Công việc mơ ước của bạn là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What was your favorite subject in school?",
+        "vietnamese": "Môn học yêu thích nhất của bạn thời còn đi học là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is the hardest part about your current job or studies?",
+        "vietnamese": "Điều khó khăn nhất trong công việc hoặc việc học hiện tại của bạn là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What do you like most about your job or school?",
+        "vietnamese": "Bạn thích điều gì nhất ở nơi làm việc hoặc trường học của mình?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What are you planning to do after graduation or this year?",
+        "vietnamese": "Bạn có kế hoạch làm gì sau khi tốt nghiệp (hoặc trong năm nay) không?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Do you like exercising or playing sports?",
+        "vietnamese": "Bạn có thích tập thể dục hoặc chơi môn thể thao nào không?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is your favorite sport to watch?",
+        "vietnamese": "Môn thể thao yêu thích nhất mà bạn thường xem là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "How many hours of sleep do you get each night?",
+        "vietnamese": "Mỗi đêm bạn thường ngủ được bao nhiêu tiếng?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is your favorite outdoor activity?",
+        "vietnamese": "Hoạt động ngoài trời yêu thích nhất của bạn là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What's your favorite color?",
+        "vietnamese": "Màu sắc yêu thích nhất của bạn là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Do you like shopping for clothes?",
+        "vietnamese": "Bạn có thích đi mua sắm quần áo không?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What's your favorite clothing style?",
+        "vietnamese": "Phong cách quần áo yêu thích của bạn là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Are you good at saving money?",
+        "vietnamese": "Bạn có phải là người biết cách tiết kiệm tiền không?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is your favorite animal?",
+        "vietnamese": "Con vật yêu thích nhất của bạn là con gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What's your favorite ice cream flavor?",
+        "vietnamese": "Vị kem yêu thích nhất của bạn là vị gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is something you want to learn in the future?",
+        "vietnamese": "Điều gì bạn rất muốn học hỏi hoặc tìm hiểu trong tương lai?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is your favorite time of the day?",
+        "vietnamese": "Khoảng thời gian nào trong ngày là bạn thích nhất?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What's your favorite board game or card game?",
+        "vietnamese": "Trò chơi cờ bàn (như cờ vua, cờ tỷ phú) hoặc bài yêu thích của bạn là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Do you collect anything?",
+        "vietnamese": "Bạn có sưu tầm món đồ gì không?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is your favorite flower?",
+        "vietnamese": "Loài hoa yêu thích nhất của bạn là hoa gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is the best gift you have ever received?",
+        "vietnamese": "Món quà tuyệt vời nhất bạn từng được nhận là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is a skill you are proud of?",
+        "vietnamese": "Kỹ năng nào bạn cảm thấy tự hào nhất ở bản thân?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What makes you laugh the most?",
+        "vietnamese": "Điều gì thường khiến bạn bật cười nhiều nhất?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What's your favorite movie or book character?",
+        "vietnamese": "Nhân vật trong phim hoặc sách yêu thích nhất của bạn là ai?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Do you believe in luck?",
+        "vietnamese": "Bạn có tin vào sự may mắn không?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is your favorite memory from childhood?",
+        "vietnamese": "Kỷ niệm yêu thích nhất thời thơ ấu của bạn là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is your biggest goal for this year?",
+        "vietnamese": "Mục tiêu lớn nhất của bạn trong năm nay là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What's the best advice someone has given you?",
+        "vietnamese": "Lời khuyên hay nhất mà ai đó từng dành cho bạn là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "Are you happy with your life right now?",
+        "vietnamese": "Bạn có đang cảm thấy hạnh phúc với cuộc sống hiện tại của mình không?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    },
+    {
+        "original": "What is your favorite hobby?",
+        "vietnamese": "Sở thích yêu thích nhất của bạn là gì?",
+        "name_vocabulary": "Floor 3",
+        "type_floor": "Boss"
+    }
+]

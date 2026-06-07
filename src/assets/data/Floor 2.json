@@ -1,0 +1,810 @@
+[
+    {
+        "word": "abroad",
+        "ipa": "/əˈbrɔːd/",
+        "english_definition": "In or to a foreign country",
+        "vietnamese_meaning": "ở nước ngoài, ra nước ngoài",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "achieve",
+        "ipa": "/əˈtʃiːv/",
+        "english_definition": "To succeed in reaching a goal",
+        "vietnamese_meaning": "đạt được, giành được",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "act",
+        "ipa": "/ækt/",
+        "english_definition": "To do something; to perform in a play or movie",
+        "vietnamese_meaning": "hành động, đóng vai",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "active",
+        "ipa": "/ˈæktɪv/",
+        "english_definition": "Busy with a lot of activities or movement",
+        "vietnamese_meaning": "tích cực, chủ động, nhanh nhẹn",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "actor",
+        "ipa": "/ˈæktə(r)/",
+        "english_definition": "A person who performs in a play, movie, or television show",
+        "vietnamese_meaning": "diễn viên",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "adult",
+        "ipa": "/ˈædʌlt/",
+        "english_definition": "A fully grown person",
+        "vietnamese_meaning": "người lớn, người trưởng thành",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "advice",
+        "ipa": "/ədˈvaɪs/",
+        "english_definition": "An opinion or suggestion about what somebody should do",
+        "vietnamese_meaning": "lời khuyên",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "affect",
+        "ipa": "/əˈfekt/",
+        "english_definition": "To produce a change in somebody or something",
+        "vietnamese_meaning": "ảnh hưởng đến, tác động đến",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "art",
+        "ipa": "/ɑːt/",
+        "english_definition": "The expression of human creative skill, usually in a visual form",
+        "vietnamese_meaning": "nghệ thuật",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "article",
+        "ipa": "/ˈɑːtɪkl/",
+        "english_definition": "A piece of writing in a newspaper or magazine",
+        "vietnamese_meaning": "bài báo, bài viết",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "artist",
+        "ipa": "/ˈɑːtɪst/",
+        "english_definition": "A person who creates art, especially paintings or drawings",
+        "vietnamese_meaning": "họa sĩ, nghệ sĩ",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "attack",
+        "ipa": "/əˈtæk/",
+        "english_definition": "An act of using violence to hurt somebody or damage a place",
+        "vietnamese_meaning": "tấn công, sự tấn công",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "audience",
+        "ipa": "/ˈɔːdiəns/",
+        "english_definition": "The group of people who watch or listen to a play, concert, or movie",
+        "vietnamese_meaning": "khán giả, thính giả",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "author",
+        "ipa": "/ˈɔːθə(r)/",
+        "english_definition": "A person who writes a book, article, or play",
+        "vietnamese_meaning": "tác giả",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "autumn",
+        "ipa": "/ˈɔːtəm/",
+        "english_definition": "The season of the year between summer and winter",
+        "vietnamese_meaning": "mùa thu",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "available",
+        "ipa": "/əˈveɪləbl/",
+        "english_definition": "That you can get, buy, or use",
+        "vietnamese_meaning": "có sẵn, sẵn sàng để dùng",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "average",
+        "ipa": "/ˈævərɪdʒ/",
+        "english_definition": "Normal or typical; calculated by adding amounts and dividing by the number of amounts",
+        "vietnamese_meaning": "trung bình",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "avoid",
+        "ipa": "/əˈvɔɪd/",
+        "english_definition": "To stay away from somebody or something",
+        "vietnamese_meaning": "tránh, né tránh",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "bill",
+        "ipa": "/bɪl/",
+        "english_definition": "A document that shows how much money you owe for goods or services",
+        "vietnamese_meaning": "hóa đơn",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "board",
+        "ipa": "/bɔːd/",
+        "english_definition": "A long, thin, flat piece of wood or other hard material",
+        "vietnamese_meaning": "tấm ván, bảng",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "boss",
+        "ipa": "/bɒs/",
+        "english_definition": "A person who is in charge of other people at work",
+        "vietnamese_meaning": "sếp, ông chủ",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "bridge",
+        "ipa": "/brɪdʒ/",
+        "english_definition": "A structure built over a river, road, or railway",
+        "vietnamese_meaning": "cây cầu",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "building",
+        "ipa": "/ˈbɪldɪŋ/",
+        "english_definition": "A structure such as a house, church, or factory that has a roof and walls",
+        "vietnamese_meaning": "tòa nhà, công trình",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "business",
+        "ipa": "/ˈbɪznəs/",
+        "english_definition": "The activity of making, buying, selling or supplying goods or services for money",
+        "vietnamese_meaning": "kinh doanh, doanh nghiệp",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "capital",
+        "ipa": "/ˈkæpɪtl/",
+        "english_definition": "The most important city of a country, usually where the government is",
+        "vietnamese_meaning": "thủ đô",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "career",
+        "ipa": "/kəˈrɪə(r)//",
+        "english_definition": "The series of jobs that a person has in a particular area of work",
+        "vietnamese_meaning": "sự nghiệp",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "cash",
+        "ipa": "/kæʃ/",
+        "english_definition": "Money in the form of coins or notes",
+        "vietnamese_meaning": "tiền mặt",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "century",
+        "ipa": "/ˈsentʃəri/",
+        "english_definition": "A period of 100 years",
+        "vietnamese_meaning": "thế kỷ",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "chance",
+        "ipa": "/tʃɑːns/",
+        "english_definition": "A possibility of something happening, especially something you want",
+        "vietnamese_meaning": "cơ hội, khả năng",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "charity",
+        "ipa": "/ˈtʃærəti/",
+        "english_definition": "An organization for helping people in need",
+        "vietnamese_meaning": "tổ chức từ thiện, lòng từ thiện",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "checking",
+        "ipa": "/ˈtʃekɪŋ/",
+        "english_definition": "An examination to make sure that something is correct or safe",
+        "vietnamese_meaning": "việc kiểm tra",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "chef",
+        "ipa": "/ʃef/",
+        "english_definition": "A professional cook, especially the most important cook in a restaurant",
+        "vietnamese_meaning": "đầu bếp trưởng",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "choice",
+        "ipa": "/tʃɔɪs/",
+        "english_definition": "An act of choosing between two or more possibilities",
+        "vietnamese_meaning": "sự lựa chọn",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "church",
+        "ipa": "/tʃɜːtʃ/",
+        "english_definition": "A building where Christians go to worship",
+        "vietnamese_meaning": "nhà thờ",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "citizen",
+        "ipa": "/ˈsɪtɪzn/",
+        "english_definition": "A person who is a legal member of a particular country",
+        "vietnamese_meaning": "công dân",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "coach",
+        "ipa": "/kəʊtʃ/",
+        "english_definition": "A person who trains a person or team in sport; a comfortable bus for long journeys",
+        "vietnamese_meaning": "huấn luyện viên, xe khách đường dài",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "colleague",
+        "ipa": "/ˈkɒliːɡ/",
+        "english_definition": "A person that you work with",
+        "vietnamese_meaning": "đồng nghiệp",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "collect",
+        "ipa": "/kəˈlekt/",
+        "english_definition": "To bring things together from different places",
+        "vietnamese_meaning": "thu thập, sưu tầm",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "company",
+        "ipa": "/ˈkʌmpəni/",
+        "english_definition": "A business organization that makes or sells goods or services",
+        "vietnamese_meaning": "công ty",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "compare",
+        "ipa": "/kəmˈpeə(r)/",
+        "english_definition": "To examine two or more things to see how they are similar or different",
+        "vietnamese_meaning": "so sánh",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "competition",
+        "ipa": "/ˌkɒmpəˈtɪʃn/",
+        "english_definition": "An event in which people compete with each other to see who is the best",
+        "vietnamese_meaning": "cuộc thi, sự cạnh tranh",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "complete",
+        "ipa": "/kəmˈpliːt/",
+        "english_definition": "To finish making or doing something",
+        "vietnamese_meaning": "hoàn thành",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "condition",
+        "ipa": "/kənˈdɪʃn/",
+        "english_definition": "The state that something or someone is in",
+        "vietnamese_meaning": "điều kiện, trạng thái",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "conference",
+        "ipa": "/ˈkɒnfərəns/",
+        "english_definition": "A large official meeting where people discuss important matters",
+        "vietnamese_meaning": "hội nghị",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "consider",
+        "ipa": "/kənˈsɪdə(r)/",
+        "english_definition": "To think carefully about something, typically before making a decision",
+        "vietnamese_meaning": "cân nhắc, xem xét",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "contain",
+        "ipa": "/kənˈteɪn/",
+        "english_definition": "To have something inside or as part of itself",
+        "vietnamese_meaning": "chứa đựng, bao gồm",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "continue",
+        "ipa": "/kənˈtɪnjuː/",
+        "english_definition": "To keep happening or existing without stopping",
+        "vietnamese_meaning": "tiếp tục",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "control",
+        "ipa": "/kənˈtrəʊl/",
+        "english_definition": "The power to make decisions or direct how something is done",
+        "vietnamese_meaning": "kiểm soát, điều khiển",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "corner",
+        "ipa": "/ˈkɔːnə(r)/",
+        "english_definition": "A place where two sides, lines, or streets meet",
+        "vietnamese_meaning": "góc (tường, đường...)",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "correct",
+        "ipa": "/kəˈrekt/",
+        "english_definition": "Accurate, right, or true; with no mistakes",
+        "vietnamese_meaning": "chính xác, đúng",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "cost",
+        "ipa": "/kɒst/",
+        "english_definition": "The amount of money that you have to pay for something",
+        "vietnamese_meaning": "giá cả, chi phí",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "countryside",
+        "ipa": "/ˈkʌntrisaɪd/",
+        "english_definition": "Land outside towns and cities, with fields, woods, and farms",
+        "vietnamese_meaning": "vùng nông thôn",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "course",
+        "ipa": "/kɔːs/",
+        "english_definition": "A series of lessons or lectures on a particular subject",
+        "vietnamese_meaning": "khóa học",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "court",
+        "ipa": "/kɔːt/",
+        "english_definition": "The place where legal trials take place; an area for playing games like tennis",
+        "vietnamese_meaning": "tòa án, sân đấu (thể thao)",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "creative",
+        "ipa": "/kriˈeɪtɪv/",
+        "english_definition": "Involving the use of skill and the imagination to produce something new",
+        "vietnamese_meaning": "sáng tạo",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "credit",
+        "ipa": "/ˈkredɪt/",
+        "english_definition": "An arrangement to receive goods or services before payment, based on trust",
+        "vietnamese_meaning": "tín dụng, lòng tin",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "crime",
+        "ipa": "/kraɪm/",
+        "english_definition": "An activity that is against the law and punishable by the government",
+        "vietnamese_meaning": "tội phạm, tội ác",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "culture",
+        "ipa": "/ˈkʌltʃə(r)/",
+        "english_definition": "The customs, arts, social institutions, and achievements of a particular social group",
+        "vietnamese_meaning": "văn hóa",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "custom",
+        "ipa": "/ˈkʌstəm/",
+        "english_definition": "An accepted or habitual way of behaving or doing things in a society",
+        "vietnamese_meaning": "phew quán, phong tục",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "customer",
+        "ipa": "/ˈkʌstəmə(r)/",
+        "english_definition": "A person who buys goods or services from a shop or business",
+        "vietnamese_meaning": "khách hàng",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "degree",
+        "ipa": "/dɪˈɡriː/",
+        "english_definition": "A unit for measuring temperature or angles; a qualification given by a university",
+        "vietnamese_meaning": "mức độ, độ, bằng cấp",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "department",
+        "ipa": "/dɪˈpɑːtmənt/",
+        "english_definition": "A section of a large organization, such as a government or business",
+        "vietnamese_meaning": "phòng ban, bộ phận",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "depend",
+        "ipa": "/dɪˈpend/",
+        "english_definition": "To rely on or be controlled by something else",
+        "vietnamese_meaning": "phụ thuộc",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "describe",
+        "ipa": "/dɪˈskraɪb/",
+        "english_definition": "To say what somebody or something is like",
+        "vietnamese_meaning": "mô tả, miêu tả",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "detail",
+        "ipa": "/ˈdiːteɪl/",
+        "english_definition": "A small individual fact or item",
+        "vietnamese_meaning": "chi tiết",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "discover",
+        "ipa": "/dɪˈskʌvə(r)/",
+        "english_definition": "To find information, a place, or an object, especially for the first time",
+        "vietnamese_meaning": "khám phá, phát hiện",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "discuss",
+        "ipa": "/dɪˈskʌs/",
+        "english_definition": "To talk about something with somebody, especially in order to decide something",
+        "vietnamese_meaning": "thảo luận, bàn bạc",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "document",
+        "ipa": "/ˈdɒkjumənt/",
+        "english_definition": "An official paper that gives information or proof of something",
+        "vietnamese_meaning": "tài liệu, văn kiện",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "earn",
+        "ipa": "/ɜːn/",
+        "english_definition": "To get money for doing work",
+        "vietnamese_meaning": "kiếm tiền, thu được",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "effect",
+        "ipa": "/ɪˈfekt/",
+        "english_definition": "A change that is a result or consequence of an action or other cause",
+        "vietnamese_meaning": "ảnh hưởng, hiệu ứng, tác động",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "employee",
+        "ipa": "/ɪmˈplɔɪiː/",
+        "english_definition": "A person who is paid to work for somebody else",
+        "vietnamese_meaning": "nhân viên, người làm công",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "environment",
+        "ipa": "/ɪnˈvaɪrənmənt/",
+        "english_definition": "The natural world in which people, animals, and plants live",
+        "vietnamese_meaning": "môi trường",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "experience",
+        "ipa": "/ɪkˈspɪəriəns/",
+        "english_definition": "Knowledge or skill that comes from doing, seeing, or feeling things",
+        "vietnamese_meaning": "kinh nghiệm, trải nghiệm",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "expert",
+        "ipa": "/ˈekspɜːt/",
+        "english_definition": "A person who has a special skill or knowledge of a subject",
+        "vietnamese_meaning": "chuyên gia",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "factory",
+        "ipa": "/ˈfæktri/",
+        "english_definition": "A building where goods are manufactured or assembled chiefly by machine",
+        "vietnamese_meaning": "nhà máy, xí nghiệp",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "foreign",
+        "ipa": "/ˈfɒrən/",
+        "english_definition": "In or from a country that is not your own",
+        "vietnamese_meaning": "nước ngoài, thuộc về nước ngoài",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "future",
+        "ipa": "/ˈfjuːtʃə(r)/",
+        "english_definition": "The time that will come after the present",
+        "vietnamese_meaning": "tương lai",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "government",
+        "ipa": "/ˈɡʌvənmənt/",
+        "english_definition": "The group of people who rule or control a country or state",
+        "vietnamese_meaning": "chính phủ",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "guest",
+        "ipa": "/ɡest/",
+        "english_definition": "A person who is invited to visit someone's home or attend an event",
+        "vietnamese_meaning": "khách mời, khách khứa",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "history",
+        "ipa": "/ˈhɪstri/",
+        "english_definition": "All the events that happened in the past",
+        "vietnamese_meaning": "lịch sử",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "improve",
+        "ipa": "/ɪmˈpruːv/",
+        "english_definition": "To make something better, or to become better",
+        "vietnamese_meaning": "cải thiện, nâng cao",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "industry",
+        "ipa": "/ˈɪndəstri/",
+        "english_definition": "The production of goods, especially in factories",
+        "vietnamese_meaning": "ngành công nghiệp",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "journey",
+        "ipa": "/ˈdʒɜːni/",
+        "english_definition": "An act of traveling from one place to another",
+        "vietnamese_meaning": "hành trình, chuyến đi",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "language",
+        "ipa": "/ˈlæŋɡwɪdʒ/",
+        "english_definition": "The system of communication in speech and writing used by a country",
+        "vietnamese_meaning": "ngôn ngữ",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "local",
+        "ipa": "/ˈləʊkl/",
+        "english_definition": "Belonging to or connected with the particular place or area you are in",
+        "vietnamese_meaning": "địa phương",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "manager",
+        "ipa": "/ˈmænɪdʒə(r)//",
+        "english_definition": "A person who is in charge of running a business, shop, or team",
+        "vietnamese_meaning": "quản lý, giám đốc",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "member",
+        "ipa": "/ˈmembə(r)//",
+        "english_definition": "A person or thing that belongs to a particular group or organization",
+        "vietnamese_meaning": "thành viên",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "museum",
+        "ipa": "/mjuˈziːəm/",
+        "english_definition": "A building where objects of historical, scientific, or artistic interest are kept",
+        "vietnamese_meaning": "bảo tàng",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "nature",
+        "ipa": "/ˈneɪtʃə(r)/",
+        "english_definition": "The physical world including plants, animals, landscapes, and natural phenomena",
+        "vietnamese_meaning": "tự nhiên, thiên nhiên",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "neighbour",
+        "ipa": "/ˈneɪbə(r)/",
+        "english_definition": "A person who lives next to or near you",
+        "vietnamese_meaning": "hàng xóm",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "opinion",
+        "ipa": "/əˈpɪnjən/",
+        "english_definition": "Your feelings or thoughts about somebody or something, rather than facts",
+        "vietnamese_meaning": "ý kiến, quan điểm",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "patient",
+        "ipa": "/ˈpeɪʃnt/",
+        "english_definition": "A person who is receiving medical treatment; able to accept delay or trouble calmly",
+        "vietnamese_meaning": "bệnh nhân, kiên nhẫn",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "population",
+        "ipa": "/ˌpɒpjuˈleɪʃn/",
+        "english_definition": "All the people who live in a particular area, city, or country",
+        "vietnamese_meaning": "dân số",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "product",
+        "ipa": "/ˈprɒdʌkt/",
+        "english_definition": "Something that is grown, made, or produced to be sold",
+        "vietnamese_meaning": "sản phẩm",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "protect",
+        "ipa": "/prəˈtekt/",
+        "english_definition": "To keep someone or something safe from injury, damage, or loss",
+        "vietnamese_meaning": "bảo vệ",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "receive",
+        "ipa": "/rɪˈsiːv/",
+        "english_definition": "To get or accept something that is sent or given to you",
+        "vietnamese_meaning": "nhận, tiếp nhận",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "scientist",
+        "ipa": "/ˈsaɪəntɪst/",
+        "english_definition": "A person who studies or works in one of the sciences",
+        "vietnamese_meaning": "nhà khoa học",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "society",
+        "ipa": "/səˈsaɪəti/",
+        "english_definition": "People in general, living together in communities",
+        "vietnamese_meaning": "xã hội",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "stranger",
+        "ipa": "/ˈstreɪndʒə(r)/",
+        "english_definition": "A person that you do not know",
+        "vietnamese_meaning": "người lạ",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "tourist",
+        "ipa": "/ˈtʊərɪst/",
+        "english_definition": "A person who is visiting a place for pleasure",
+        "vietnamese_meaning": "khách du lịch",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    },
+    {
+        "word": "traffic",
+        "ipa": "/ˈtræfɪk/",
+        "english_definition": "The vehicles that are on a road at a particular time",
+        "vietnamese_meaning": "giao thông",
+        "name_vocabulary": "Floor 2",
+        "type_floor": "Normal"
+    }
+]

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Character Profile - English Fantasy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;600;700;800;900&amp;family=MedievalSharp&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#1A2B4C",
+                        "primary-container": "#D1E8FF",
+                        "on-primary-container": "#1A2B4C",
+                        secondary: "#00E5FF",
+                        "secondary-container": "#E0F7FA",
+                        "on-secondary-container": "#006064",
+                        surface: "#EBF5FF",
+                        "surface-container": "#D1E8FF",
+                        "surface-container-highest": "#C0D9F0",
+                        "on-surface": "#1A2B4C",
+                        "on-surface-variant": "#44474E",
+                        "outline": "#74777F"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    fontFamily: {
+                        headline: ["Public Sans", "sans-serif"],
+                        display: ["MedievalSharp", "serif"],
+                        body: ["Public Sans", "sans-serif"],
+                        label: ["Public Sans", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: transparent !important;
+            padding: 0;
+            margin: 0;
+            overflow-y: auto;
+            min-height: 100vh;
+        }
+        .icy-texture {
+            background-color: #EBF5FF;
+            background-image: 
+                radial-gradient(circle at 2px 2px, rgba(26, 43, 76, 0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .glossy-bar {
+            background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 100%);
+        }
+        .electric-glow {
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
+        }
+        .geometric-border-top {
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, #1A2B4C 10px, #1A2B4C 11px),
+                              repeating-linear-gradient(-45deg, transparent, transparent 10px, #1A2B4C 10px, #1A2B4C 11px);
+            height: 4px;
+            width: 100%;
+            opacity: 0.3;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #1A2B4C;
+            font-family: 'MedievalSharp', cursive;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: color 0.2s ease;
+            margin-bottom: 1.5rem;
+        }
+        .back-link:hover {
+            color: #00E5FF;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center pt-6 pb-12 px-4">
+    <!-- Mobile Container Emulator -->
+    <div class="w-[400px] h-[780px] bg-surface icy-texture relative overflow-hidden flex flex-col items-center pt-[40px] px-[24px] shadow-2xl border border-white/20 rounded-3xl">
+        <!-- Decorative Top Border -->
+        <div class="absolute top-0 left-0 geometric-border-top"></div>
+        
+        <!-- 1. Character Avatar -->
+        <div class="relative mb-6">
+            <div class="w-[120px] h-[120px] border-4 border-[#1A2B4C] overflow-hidden bg-[#2C3E50] shadow-xl flex items-center justify-center rounded-xl">
+                <img alt="Character Avatar" class="w-full h-full object-cover" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%23c6a94e'/%3E%3Crect x='60' y='80' width='80' height='100' fill='%238b7d6b' rx='5'/%3E%3Ccircle cx='100' cy='60' r='35' fill='%23a89968'/%3E%3Ccircle cx='85' cy='50' r='6' fill='%232c2c2c'/%3E%3Ccircle cx='115' cy='50' r='6' fill='%232c2c2c'/%3E%3Cline x1='90' y1='70' x2='110' y2='70' stroke='%232c2c2c' stroke-width='2'/%3E%3C/svg%3E"/>
+            </div>
+        </div>
+
+        <!-- 2. Character Info (Level/XP Text) -->
+        <div class="text-center mb-6">
+            <h1 id="char-level" class="font-display text-2xl font-bold text-primary tracking-wider uppercase">&nbsp;</h1>
+            <p id="char-xp" class="font-headline text-sm font-semibold text-primary/70 mt-1">&nbsp;</p>
+        </div>
+
+        <!-- 3. Progress Bar -->
+        <div class="w-[280px] h-[12px] bg-primary rounded-full relative overflow-hidden shadow-inner glossy-bar mb-8">
+            <div id="char-xp-bar" class="h-full bg-gradient-to-r from-secondary to-blue-400 electric-glow transition-all duration-1000" style="width: 0%;"></div>
+        </div>
+
+        <!-- 4. Personal Information -->
+        <div class="flex flex-col items-center mb-6">
+            <div class="flex items-center gap-2 mb-1">
+                <h2 id="char-username" class="font-display text-3xl font-bold text-primary tracking-wide">&nbsp;</h2>
+                <span id="char-gender" class="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded uppercase tracking-tighter border border-primary/20">
+                    &nbsp;
+                </span>
+            </div>
+            <p class="font-headline text-xs text-on-surface-variant flex items-center gap-1 opacity-80 mb-4">
+                <span class="material-symbols-outlined text-[14px]">mail</span>
+                <span id="char-email">&nbsp;</span>
+            </p>
+            <p class="font-headline text-sm text-center text-primary/80 italic max-w-[280px] mt-4 border-t border-primary/10 pt-4">
+            </p>
+        </div>
+
+        <!-- Decorative Bottom Border -->
+        <div class="absolute bottom-0 left-0 geometric-border-top rotate-180"></div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const API_BASE_URL = 'http://localhost:3000/api';
+            const userAccount = JSON.parse(localStorage.getItem('userAccount'));
+            if (userAccount) {
+                // Fetch profile and account data from PostgreSQL backend
+                fetch(`${API_BASE_URL}/profile/${userAccount.id_account}`)
+                .then(res => {
+                    if (!res.ok) throw new Error('Failed to load profile.');
+                    return res.json();
+                })
+                .then(data => {
+                    const acc = data.account;
+                    const prof = data.profile;
+
+                    if (acc) {
+                        // Update username
+                        const nameEl = document.getElementById('char-username');
+                        if (nameEl) {
+                            nameEl.textContent = acc.username;
+                        }
+                        
+                        // Update gender
+                        const genderEl = document.getElementById('char-gender');
+                        if (genderEl && acc.gender) {
+                            const genderVal = acc.gender.trim().toLowerCase();
+                            if (genderVal === 'male') {
+                                genderEl.textContent = 'Nam';
+                            } else if (genderVal === 'female') {
+                                genderEl.textContent = 'Nữ';
+                            } else if (genderVal === 'other') {
+                                genderEl.textContent = 'Khác';
+                            } else {
+                                genderEl.textContent = acc.gender;
+                            }
+                        }
+                        
+                        // Update email
+                        const emailEl = document.getElementById('char-email');
+                        if (emailEl) {
+                            emailEl.textContent = acc.gmail;
+                        }
+                    }
+
+                    if (prof) {
+                        localStorage.setItem('userProfile', JSON.stringify(prof));
+                        localStorage.setItem('playerLevel', prof.level_id);
+                        localStorage.setItem('playerXp', prof.current_xp);
+                        localStorage.setItem('unlockedFloors', prof.floor_unlocked);
+
+                        // Load level & XP configs
+                        const currentLvl = prof.level_id;
+                        const currentXp = prof.current_xp;
+                        
+                        const xpLevels = {
+                            1: 100,
+                            2: 300,
+                            3: 500,
+                            4: 750,
+                            5: 1000
+                        };
+                        
+                        const requiredXp = xpLevels[currentLvl] || 1000;
+                        
+                        const lvlText = document.getElementById('char-level');
+                        if (lvlText) lvlText.textContent = `LVL ${currentLvl}`;
+                        
+                        const xpText = document.getElementById('char-xp');
+                        if (xpText) xpText.textContent = `${currentXp} / ${requiredXp} XP`;
+                        
+                        const progressBar = document.getElementById('char-xp-bar');
+                        if (progressBar) {
+                            const percentage = Math.min(100, (currentXp / requiredXp) * 100);
+                            progressBar.style.width = `${percentage}%`;
+                        }
+                    }
+                })
+                .catch(err => {
+                    console.error("Profile load error:", err);
+                });
+            }
+        });
+
+        function closeProfilePanel() {
+            if (window.parent && typeof window.parent.closeProfilePanel === 'function') {
+                window.parent.closeProfilePanel();
+            } else {
+                window.location.href = 'dashboard.html';
+            }
+        }
+    </script>
+</body>
+</html>

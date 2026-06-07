@@ -1,0 +1,26 @@
+{
+  "name": "english-fantasy",
+  "version": "1.0.0",
+  "description": "An interactive English learning game with dungeon exploration, battles, and vocabulary challenges",
+  "main": "src/html/index.html",
+  "scripts": {
+    "serve": "npx http-server src -p 8000 -c-1",
+    "build": "echo 'Build script can be added here for production'",
+    "lint": "echo 'Linting can be configured here'"
+  },
+  "keywords": [
+    "english-learning",
+    "game",
+    "interactive",
+    "vocabulary",
+    "educational"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}

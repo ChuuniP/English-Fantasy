@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - English Fantasy</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@300;400;500;600;700;800&family=MedievalSharp&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+            background-color: transparent !important;
+            padding: 0;
+            margin: 0;
+            overflow-y: auto;
+            min-height: auto;
+        }
+        .content-wrapper {
+            padding: 1.5rem;
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body class="text-light font-sans">
+    <div class="content-wrapper">
+        <!-- Welcome Banner -->
+        <section class="welcome-banner card-glow" id="welcome-section">
+            <div class="banner-overlay"></div>
+            <div class="banner-content">
+                <h1 class="font-medieval main-heading">Welcome Back, Brave Adventurer</h1>
+                <p class="banner-subtitle">The realm of English Fantasy awaits your command. Steel your heart, choose your destination, and write your legend.</p>
+            </div>
+        </section>
+
+        <!-- Bento Grid Layout for Game Modes -->
+        <div class="bento-grid" style="margin-top: 1.5rem;">
+            <!-- Story Mode Card -->
+            <div class="grid-card col-span-2 group story-card" id="card-storymode">
+                <div class="card-bg" style="background-image: url('../assets/images/story mode/screen.png');"></div>
+                <div class="card-overlay story-overlay"></div>
+                <div class="card-content flex flex-col justify-end">
+                    <h2 class="font-medieval card-title text-glow-cyan">Story Mode</h2>
+                    <p class="card-description">Follow the epic narrative of the kingdom, unravel ancient mysteries, and claim legendary rewards.</p>
+                    <div class="card-footer-action">
+                        <span class="action-btn font-medieval">Continue Adventure <span class="arrow">&rarr;</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side Quests Card -->
+            <div class="grid-card group side-quests-card" id="card-sidequests" onclick="if(window.parent && typeof window.parent.loadPage === 'function'){ window.parent.loadPage('sub_quest.html'); } else { window.location.href='sub_quest.html'; }">
+                <div class="card-bg" style="background-image: url('../assets/images/side quest/screen.png');"></div>
+                <div class="card-overlay side-overlay"></div>
+                <div class="card-content flex flex-col justify-end">
+                    <h2 class="font-medieval card-title text-glow-emerald">Side Quests</h2>
+                    <p class="card-description">Help citizens, hunt monsters, and earn local reputation.</p>
+                    <div class="card-footer-action">
+                        <span class="action-btn font-medieval">Explore Tasks <span class="arrow">&rarr;</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dungeon Card -->
+            <div class="grid-card col-span-3 group dungeon-card" id="card-dungeon" onclick="if(window.parent && typeof window.parent.loadPage === 'function'){ window.parent.loadPage('dungeon.html'); } else { window.location.href='dungeon.html'; }">
+                <div class="card-bg" style="background-image: url('../assets/images/dungeon/screen.png');"></div>
+                <div class="card-overlay dungeon-overlay"></div>
+                <div class="card-content flex flex-col justify-end">
+                    <h2 class="font-medieval card-title text-glow-ruby">The Dungeon</h2>
+                    <p class="card-description">Descend into mysterious vaults, battle elite guardians like the Golem Elite, and acquire legendary weapons.</p>
+                    <div class="card-footer-action">
+                        <span class="action-btn font-medieval">Enter Vaults <span class="arrow">&rarr;</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Listen for messages from parent (index.html) when profile is opened/closed
+        window.addEventListener('message', (event) => {
+            const sideQuestCard = document.getElementById('card-sidequests');
+            if (event.data.type === 'profileOpened') {
+                // Add col-span-2 to Side Quests card when profile is open
+                if (sideQuestCard && !sideQuestCard.classList.contains('col-span-2')) {
+                    sideQuestCard.classList.add('col-span-2');
+                }
+            } else if (event.data.type === 'profileClosed') {
+                // Remove col-span-2 from Side Quests card when profile is closed
+                if (sideQuestCard && sideQuestCard.classList.contains('col-span-2')) {
+                    sideQuestCard.classList.remove('col-span-2');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

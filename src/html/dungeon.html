@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>The Dungeon Map - English Fantasy</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=MedievalSharp&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+            background-color: transparent !important;
+            padding: 0;
+            margin: 0;
+            overflow-y: auto;
+            min-height: 100vh;
+        }
+        .content-wrapper {
+            padding: 2.5rem;
+            max-width: 100%;
+        }
+        .font-medieval { font-family: 'MedievalSharp', cursive; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+        }
+        
+        /* Custom styled back link to match image */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #52a2ff;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .back-link:hover {
+            color: #00d2ff;
+        }
+        
+        /* Custom Dungeon Title Glow */
+        .dungeon-title-glow {
+            font-size: 3.5rem;
+            color: #ba1a1a;
+            text-shadow: 0px 0px 15px rgba(186, 26, 26, 0.8), 0px 0px 30px rgba(255, 90, 0, 0.4);
+            letter-spacing: 1px;
+            line-height: 1.1;
+        }
+
+        /* Season badge styles from the image */
+        .season-badge-custom {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .season-badge-custom span {
+            color: #ffbe1a;
+        }
+
+        /* Custom grids matching image scale */
+        .dungeon-grid-custom {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2.5rem;
+        }
+        
+        /* Floor Card customizations */
+        .floor-card-custom {
+            position: relative;
+            aspect-ratio: 4/5;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 2px solid #24324f;
+            background-color: #0b1326;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        /* Unlocked card blue border and interactive glow */
+        .floor-card-custom.unlocked-state {
+            border-color: #0084ff;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 132, 255, 0.15);
+        }
+        .floor-card-custom.unlocked-state:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 132, 255, 0.3);
+            border-color: #00d2ff;
+        }
+        
+        .floor-card-bg-img {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.6s ease;
+        }
+        
+        .floor-card-custom:hover .floor-card-bg-img {
+            transform: scale(1.05);
+        }
+        
+        .card-inner-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(6,10,19,0.95) 20%, rgba(6,10,19,0.4) 60%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .floor-num-title {
+            font-size: 2.5rem;
+            color: #ffffff;
+            letter-spacing: 2px;
+            font-weight: 800;
+            text-transform: uppercase;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            margin-bottom: 1rem;
+        }
+
+        .status-pill {
+            background-color: rgba(0, 132, 255, 0.25);
+            border: 1px solid rgba(0, 132, 255, 0.5);
+            color: #93ccff;
+            padding: 0.35rem 1.25rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Locked state styling matching the image opacity and layout */
+        .floor-card-custom.locked-state {
+            opacity: 0.5;
+        }
+        .floor-card-custom.locked-state .floor-num-title {
+            color: #64748b;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .floor-card-custom.locked-state .lock-icon-svg {
+            font-size: 3.5rem;
+            color: #475569;
+            margin-bottom: 1rem;
+        }
+        .req-text {
+            color: #475569;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 1024px) {
+            .dungeon-grid-custom {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .dungeon-grid-custom {
+                grid-template-columns: 1fr;
+            }
+            .content-wrapper {
+                padding: 1.5rem;
+            }
+            .dungeon-title-glow {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="stone-texture text-light">
+    <div class="content-wrapper">
+        <!-- Back Button Link -->
+        <div class="mb-6">
+            <a href="#" class="back-link font-medieval" onclick="if (window.parent && typeof window.parent.loadPage === 'function') { window.parent.loadPage('dashboard.html'); } else { window.location.href='dashboard.html'; } return false;">
+                <span class="material-symbols-outlined">arrow_back</span> Back to Dashboard
+            </a>
+        </div>
+
+        <!-- Header Row -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex flex-col">
+                <h2 class="font-medieval dungeon-title-glow">The Dungeon</h2>
+                <p id="dungeon-desc" class="text-[1.1rem] text-[#8ca0c2] mt-2">Master the grammar of the depths to proceed.</p>
+                <div id="dungeon-floors-count" class="text-sm text-amber-500/80 mt-1 font-semibold font-medieval">0 Floors</div>
+            </div>
+            <div class="self-start md:self-center relative">
+                <button id="dungeon-select-btn" class="season-badge-custom font-medieval hover:border-amber-400 focus:outline-none transition duration-200 cursor-pointer flex items-center gap-2">
+                    <span class="material-symbols-outlined">military_tech</span>
+                    <span id="dungeon-badge-text">Dungeon 1: Arcane Vaults</span>
+                    <span class="material-symbols-outlined text-sm">arrow_drop_down</span>
+                </button>
+                
+                <!-- Dropdown Menu -->
+                <div id="dungeon-dropdown" class="hidden absolute right-0 mt-2 w-72 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl z-50 py-2">
+                    <div class="text-xs text-slate-400 px-4 py-1 border-b border-slate-800 font-semibold mb-1">SELECT DUNGEON</div>
+                    <div id="dungeon-list-container" class="flex flex-col gap-1 max-h-48 overflow-y-auto px-2">
+                        <!-- Items dynamically loaded -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floor Selection Grid -->
+        <div id="dungeon-floors-grid" class="dungeon-grid-custom">
+            <!-- Floor cards will be dynamically loaded -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const API_BASE_URL = 'http://localhost:3000/api';
+            const userAccount = JSON.parse(localStorage.getItem('userAccount'));
+            let unlockedFloors = 1;
+            let currentDungeonId = 1;
+
+            const renderFloors = (dungeonId, unlocked) => {
+                const floorBgs = [
+                    'https://lh3.googleusercontent.com/aida-public/AB6AXuDSbdgwVmNgAkJLGleep5WNyDscUDsYOflMhVZmyutOmhqDlP90ggM8muJV2a5xanuVpUl8jOGset8rFTnGcmgV08XTEq4SvGTl428zjM3wCQvpPCZRCPq58oBZqCFa2-Z0bCiIFxZLw20_u0vmxs1SFdkTbqkftwRGaUTADpqeEp3j2FwL69sTr4R10Mdz3tSvfVQWXWL72mJiPqoPE6GoEPNdD5M-IQOd8BPW4FPv36comaMj0OSRafuxZd9TS3kH1NTc75T49Bw',
+                    'https://lh3.googleusercontent.com/aida-public/AB6AXuBVcEA2apdwzOqdWUM7Oau7e0PNokDW25pHlvuyXM_0Soj9Wqbf5wXFiSxXXyoUQF0DrnD0Q2ueCjj88KLU_GMPqzR5m91LlOCuuuvioaO0DX4HDUZe-_vDxUkqd5n1ru9Q81qwSpqYOFd0nlum7YPRI2xb0xuxNNQpBzPqJxqJoAcRvP5vfnFVSn1MNAZpR6KxpqCWyx-mQtHBLDxP-xeL2MRWKanX9-vfFTA0XDcy3-IVERatbtNPVbsm2Imjn6yaITSSNk8QmzU',
+                    'https://lh3.googleusercontent.com/aida-public/AB6AXuDNR2t77w6LAQ80QaUAeLmy59m4UBrQLfEgr6Ro-oLYZaMxqykOl0LUJ335w7hxxQ4Y3Of-bsZT2Cgf4Cu8ajEs_wabA7KcubQdNrdtBQCfMAHYUYYGuFIhEkgA05a26k2Uyikn6NISVK4ZcxrPa11wcci3Kwq-1bja5hrYsy-UZyqMN3xR6nMDh4CFptIvfDs1zi1GIKHNNsU8dW6GomqEhjyy_-US8mkBCJufdSOzNVPXh-n0QzyMPM2n_PLQAJnfN31oPm2JER8'
+                ];
+                
+                fetch(`${API_BASE_URL}/dungeon/${dungeonId}/floors`)
+                .then(res => res.json())
+                .then(floors => {
+                    const floorsCountEl = document.getElementById('dungeon-floors-count');
+                    if (floorsCountEl) {
+                        floorsCountEl.innerText = `${floors.length} Floors`;
+                    }
+                    const grid = document.getElementById('dungeon-floors-grid');
+                    if (!grid) return;
+                    grid.innerHTML = '';
+                    
+                    floors.forEach(f => {
+                        const isUnlocked = f.floor_number <= unlocked;
+                        const bgImg = floorBgs[(f.floor_number - 1) % floorBgs.length];
+                        
+                        if (isUnlocked) {
+                            grid.innerHTML += `
+                                <a href="battle.html?floor=${f.floor_number}&id_floor=${f.id_floor}" class="floor-card-custom unlocked-state group block">
+                                    <div class="floor-card-bg-img" style="background-image: url('${bgImg}');"></div>
+                                    <div class="card-inner-overlay">
+                                        <span class="font-medieval floor-num-title">Floor ${f.floor_number}</span>
+                                        <span class="status-pill">Enter</span>
+                                    </div>
+                                </a>
+                            `;
+                        } else {
+                            grid.innerHTML += `
+                                <div class="floor-card-custom locked-state">
+                                    <div class="floor-card-bg-img" style="background-image: url('${bgImg}');"></div>
+                                    <div class="card-inner-overlay">
+                                        <span class="material-symbols-outlined lock-icon-svg">lock</span>
+                                        <span class="font-medieval floor-num-title">Floor ${f.floor_number}</span>
+                                        <span class="req-text">Requirement: Floor ${f.floor_number - 1} Clear</span>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    });
+                })
+                .catch(err => {
+                    console.error('Error rendering floors:', err);
+                    const grid = document.getElementById('dungeon-floors-grid');
+                    if (grid) {
+                        grid.innerHTML = `
+                            <a href="battle.html?floor=1&id_floor=1" class="floor-card-custom unlocked-state group block">
+                                <div class="floor-card-bg-img" style="background-image: url('${floorBgs[0]}');"></div>
+                                <div class="card-inner-overlay">
+                                    <span class="font-medieval floor-num-title">Floor 1</span>
+                                    <span class="status-pill">Enter</span>
+                                </div>
+                            </a>
+                        `;
+                    }
+                });
+            };
+
+            // Toggle Dropdown
+            const selectBtn = document.getElementById('dungeon-select-btn');
+            const dropdown = document.getElementById('dungeon-dropdown');
+            if (selectBtn && dropdown) {
+                selectBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dropdown.classList.toggle('hidden');
+                });
+                document.addEventListener('click', () => {
+                    dropdown.classList.add('hidden');
+                });
+            }
+
+            const fetchDungeonsList = () => {
+                fetch(`${API_BASE_URL}/dungeons`)
+                .then(res => res.json())
+                .then(dungeons => {
+                    const listContainer = document.getElementById('dungeon-list-container');
+                    if (!listContainer) return;
+                    listContainer.innerHTML = '';
+                    
+                    dungeons.forEach(d => {
+                        const isCurrent = d.id_dungeon === currentDungeonId;
+                        const btn = document.createElement('button');
+                        btn.className = `w-full text-left px-3 py-2 rounded-lg text-sm transition duration-150 flex items-center justify-between ${
+                            isCurrent ? 'bg-amber-500/10 text-amber-400 font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                        }`;
+                        btn.innerHTML = `
+                            <span>Dungeon ${d.id_dungeon}: ${d.name_dungeon}</span>
+                            ${isCurrent ? '<span class="material-symbols-outlined text-amber-400 text-sm">check</span>' : ''}
+                        `;
+                        btn.addEventListener('click', () => {
+                            if (!isCurrent) {
+                                currentDungeonId = d.id_dungeon;
+                                fetchDungeonDetails(currentDungeonId, unlockedFloors);
+                                renderFloors(currentDungeonId, unlockedFloors);
+                                fetchDungeonsList(); // refresh active style
+                            }
+                        });
+                        listContainer.appendChild(btn);
+                    });
+                })
+                .catch(err => console.error('Error fetching dungeons list:', err));
+            };
+
+            const fetchDungeonDetails = (dungeonId, currentFloor) => {
+                currentDungeonId = dungeonId;
+                fetch(`${API_BASE_URL}/dungeon/${dungeonId}`)
+                .then(res => {
+                    if (!res.ok) throw new Error('Failed to load dungeon info.');
+                    return res.json();
+                })
+                .then(dungeon => {
+                    document.getElementById('dungeon-desc').innerText = dungeon.description || 'Master the grammar of the depths to proceed.';
+                    document.getElementById('dungeon-badge-text').innerText = `Dungeon ${dungeonId}: ${dungeon.name_dungeon}`;
+                })
+                .catch(err => {
+                    console.error('Error fetching dungeon details:', err);
+                    document.getElementById('dungeon-badge-text').innerText = `Dungeon ${dungeonId}: Arcane Vaults`;
+                });
+            };
+
+            if (userAccount) {
+                // Fetch profile status from PostgreSQL Backend
+                fetch(`${API_BASE_URL}/profile/${userAccount.id_account}`)
+                .then(res => {
+                    if (!res.ok) throw new Error('Failed to load profile.');
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.profile) {
+                        unlockedFloors = data.profile.floor_unlocked || 1;
+                        const dungeonUnlocked = data.profile.dungeon_unlocked || 1;
+                        localStorage.setItem('unlockedFloors', unlockedFloors);
+                        renderFloors(dungeonUnlocked, unlockedFloors);
+                        fetchDungeonDetails(dungeonUnlocked, unlockedFloors);
+                        fetchDungeonsList();
+                    }
+                })
+                .catch(err => {
+                    console.error("Dungeon floor sync error:", err);
+                    unlockedFloors = parseInt(localStorage.getItem('unlockedFloors')) || 1;
+                    renderFloors(1, unlockedFloors);
+                    fetchDungeonDetails(1, unlockedFloors);
+                    fetchDungeonsList();
+                });
+            } else {
+                unlockedFloors = parseInt(localStorage.getItem('unlockedFloors')) || 1;
+                renderFloors(1, unlockedFloors);
+                fetchDungeonDetails(1, unlockedFloors);
+                fetchDungeonsList();
+            }
+        });
+    </script>
+</body>
+</html>

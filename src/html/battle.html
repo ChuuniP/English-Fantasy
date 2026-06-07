@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Arcane Quest - Floor 1 Battle</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&amp;family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#004b74",
+                        "mana-purple": "#a855f7",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "primary": "#004a74",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#ffe085",
+                        "on-tertiary-fixed": "#231b00",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#2b3135",
+                        "surface-variant": "#dde3e8",
+                        "surface-tint": "#016398",
+                        "secondary-fixed": "#9bf6b2",
+                        "primary-fixed-dim": "#94ccff",
+                        "on-secondary-container": "#0b723b",
+                        "primary-container": "#006398",
+                        "surface-container": "#e9eff4",
+                        "surface": "#f4faff",
+                        "on-primary-container": "#b9dcff",
+                        "secondary": "#006d37",
+                        "on-surface-variant": "#40474f",
+                        "inverse-on-surface": "#ebf1f6",
+                        "on-surface": "#161c20",
+                        "on-primary-fixed": "#001d32",
+                        "on-secondary-fixed": "#00210c",
+                        "surface-container-high": "#e3e9ee",
+                        "surface-container-highest": "#dde3e8",
+                        "tertiary-container": "#c6a94e",
+                        "surface-bright": "#f4faff",
+                        "secondary-fixed-dim": "#80d997",
+                        "background": "#f4faff",
+                        "tertiary": "#735c00",
+                        "on-tertiary-fixed-variant": "#574500",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#e3c466",
+                        "outline-variant": "#c0c7d1",
+                        "health-red": "#ba1a1a",
+                        "outline": "#717880",
+                        "primary-fixed": "#cde5ff",
+                        "dungeon-flame": "#f97316",
+                        "surface-container-low": "#eef4f9",
+                        "on-tertiary-container": "#4e3e00",
+                        "surface-dim": "#d5dbe0",
+                        "inverse-primary": "#94ccff",
+                        "xp-glow": "#00aaff",
+                        "gold-resource": "#ffe084",
+                        "secondary-container": "#98f3af",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed-variant": "#005228",
+                        "on-background": "#161c20"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "40px",
+                        "unit": "8px",
+                        "container-max": "1200px",
+                        "gutter": "24px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["MedievalSharp"],
+                        "label-bold": ["Inter"],
+                        "headline-md": ["MedievalSharp"],
+                        "body-md": ["Inter"],
+                        "headline-xl": ["MedievalSharp"],
+                        "mono": ["JetBrains Mono", "monospace"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: transparent !important;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+        .xp-bar-glow {
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        .xp-bar-glow::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: sparkle 3s infinite;
+        }
+        @keyframes sparkle {
+            0% { left: -100%; }
+            100% { left: 200%; }
+        }
+        .health-bar-glow {
+            box-shadow: 0 0 12px rgba(186, 26, 26, 0.3);
+        }
+        .hit-indicator-pulse {
+            animation: pulse-blue 2s infinite;
+        }
+        @keyframes pulse-blue {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 170, 255, 0.7); }
+            50% { transform: scale(1.1); box-shadow: 0 0 15px 5px rgba(0, 170, 255, 0); }
+        }
+        .game-button {
+            transition: all 0.1s ease;
+        }
+        .game-button:active {
+            transform: translateY(2px);
+        }
+        .monster-float {
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #52a2ff;
+            font-family: 'MedievalSharp', cursive;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .back-link:hover {
+            color: #00d2ff;
+        }
+        /* ===== Battle Log / Victory Modal ===== */
+        #victory-modal {
+            animation: fadeInScale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.85); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        .log-entry {
+            animation: slideInLog 0.3s ease both;
+        }
+        @keyframes slideInLog {
+            from { opacity: 0; transform: translateX(-16px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        .hint-badge-used {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #1c1400;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 1px 7px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            letter-spacing: 0.05em;
+        }
+        .hint-badge-clean {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 1px 7px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            letter-spacing: 0.05em;
+        }
+        .damage-badge {
+            background: linear-gradient(135deg, #ef4444, #b91c1c);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 1px 8px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+        #log-list {
+            scrollbar-width: thin;
+            scrollbar-color: #334155 transparent;
+        }
+        #log-list::-webkit-scrollbar { width: 4px; }
+        #log-list::-webkit-scrollbar-track { background: transparent; }
+        #log-list::-webkit-scrollbar-thumb { background-color: #334155; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-slate-950 text-white overflow-hidden h-screen flex flex-col">
+    <!-- Main Content Area: Battle Interface -->
+    <main class="flex-grow flex flex-col overflow-hidden pt-6 px-8 relative">
+        <!-- Top HUD Area -->
+        <div class="mb-4 flex justify-between items-center w-full">
+            <a href="#" class="back-link" onclick="if(window.parent && typeof window.parent.confirmBattleRetreat === 'function'){ window.parent.confirmBattleRetreat(() => { window.location.href='dungeon.html'; }); } else { window.location.href='dungeon.html'; } return false;">
+                <span class="material-symbols-outlined">arrow_back</span> Retreat to Dungeon Map
+            </a>
+            <div class="flex items-center gap-4 bg-slate-900/80 border border-slate-700/50 px-4 py-1.5 rounded-full backdrop-blur-sm shadow-[0_0_15px_rgba(0,170,255,0.1)]">
+                <span id="floor-display-text" class="font-headline-md text-[#ffe084] text-sm tracking-wide">Floor 1</span>
+                <span class="text-slate-600">|</span>
+                <span id="turn-display" class="font-sans text-emerald-400 text-xs font-bold uppercase tracking-wider">Turn 1/3</span>
+            </div>
+        </div>
+
+        <div class="flex-grow flex flex-col items-center justify-between relative px-6 py-4">
+            <!-- Question Area -->
+            <div class="z-20 max-w-lg w-full mx-auto" style="margin-top:-48px;">
+                <div class="bg-slate-900/80 backdrop-blur-md border-2 border-[#00aaff] p-3 rounded-3xl shadow-[0_0_30px_rgba(0,170,255,0.2)] text-center relative" style="line-height:1.2;">
+                    <div id="question-type" class="text-[10px] text-[#00aaff] uppercase tracking-[0.35em] font-bold font-sans inline-block" style="width: calc(100% + 40%); margin-left: -20%; margin-right: -20%; padding-top: 0.2rem; padding-bottom: 0.2rem; text-align:center; line-height:1;">Loading...</div>
+                    <div class="flex items-center justify-center gap-2" style="margin:6px 0;">
+                        <p id="question-text" class="font-headline-md text-base text-white">"A round fruit with red or green skin"</p>
+                        <button id="tts-btn" class="hidden text-sky-400 hover:text-sky-300 hover:scale-110 active:scale-95 transition-all flex items-center justify-center p-1 rounded-full hover:bg-slate-800" aria-label="Listen to definition">
+                            <span class="material-symbols-outlined" style='font-variation-settings: "FILL" 1; font-size:20px;'>volume_up</span>
+                        </button>
+                    </div>
+                    <!-- Timer -->
+                    <div class="absolute -bottom-1 left-4 right-4 h-2 bg-slate-800 rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-yellow-400 to-red-500 w-full transition-all duration-100" id="timer-bar" style="width: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative flex-grow flex items-center justify-center w-full max-w-2xl mx-auto overflow-visible">
+                <!-- Monster Illustration -->
+                <div class="monster-float z-10 w-full flex flex-col bg-transparent justify-center items-center relative" style="height: 190px; margin-top: -30px;">
+                    <!-- Monster Name -->
+                    <div id="monster-name" class="text-[#ffe084] font-headline-md text-lg tracking-wider mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Monster Name</div>
+                    <img id="monster-img" alt="" class="h-[150px] max-h-full w-auto object-contain drop-shadow-[0_15px_35px_rgba(0,0,0,0.8)]" src="" style="display:none;" />
+                    <!-- Monster HP Bar -->
+                    <div class="absolute -bottom-10 flex flex-col items-center gap-1.5 left-1/2 -translate-x-1/2" style="width: 230px;">
+                        <div id="monster-hp-text" class="text-white font-headline-md text-sm tracking-wider drop-shadow-md">HP 100/100</div>
+                        <div class="w-full h-2.5 bg-slate-900 rounded-full border border-slate-700 p-0.5 overflow-hidden shadow-[0_0_10px_rgba(239,68,68,0.3)]">
+                            <div id="monster-hp-bar" class="h-full bg-gradient-to-r from-red-600 to-orange-500 rounded-full w-full transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Atmospheric Particle Effect -->
+                <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
+                    <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_transparent_0%,_#0f172a_70%)]"></div>
+                </div>
+            </div>
+
+            <!-- Footer Input -->
+            <div class="w-full z-20 mx-auto" style="position:fixed;left:50%;transform:translateX(-50%);bottom:14px;width:calc(100% - 32px);max-width:720px;z-index:999;">
+                <div class="bg-slate-900/70 border border-slate-700 rounded-3xl backdrop-blur-md shadow-2xl p-3 mb-2">
+                    <div class="flex items-center justify-between gap-3">
+                        <div>
+                    
+                            <div id="player-hp-text" class="text-white font-semibold text-sm">HP 100 / 100</div>
+                        </div>
+                
+                    </div>
+                    <div class="mt-3 h-3 rounded-full bg-slate-800 border border-slate-700 overflow-hidden">
+                        <div id="player-hp-bar" class="h-full bg-gradient-to-r from-emerald-500 to-lime-400 rounded-full w-full transition-all duration-300 health-bar-glow"></div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 w-full">
+                    <div class="flex-grow flex items-center gap-3 bg-slate-900/60 p-2 rounded-full border border-slate-700 backdrop-blur-md shadow-2xl" style="height:48px;">
+                        <div class="flex-grow relative" style="height:100%;display:flex;align-items:center;">
+                            <input autofocus class="w-full bg-transparent border-none text-white font-mono text-base px-3 focus:ring-0 placeholder:text-slate-500" placeholder="Type your answer..." type="text" style="height:32px;"/>
+                        </div>
+                        <button id="mic-btn" style="width:37px;height:37px;border-radius:50%;" class="bg-[#004a74] flex items-center justify-center text-white hover:scale-105 active:translate-y-1 transition-all game-button">
+                            <span class="material-symbols-outlined" style='font-variation-settings: "FILL" 1; font-size:18px;'>mic</span>
+                        </button>
+                        <button id="submit-btn" type="button" aria-label="Submit" style="width:37px;height:37px;border-radius:50%;" class="bg-[#00aaff] flex items-center justify-center text-slate-950 hover:scale-105 active:translate-y-1 transition-all game-button"><span class="material-symbols-outlined" style='font-variation-settings: "FILL" 1; font-size:20px;'>play_arrow</span></button>
+                    </div>
+                    <button id="help-btn" aria-label="Hint" style="width:37px;height:37px;border-radius:50%;flex-shrink:0;" class="bg-slate-900 flex items-center justify-center text-[#00aaff] border-2 border-[#00aaff]/40 shadow-[0_0_15px_rgba(0,170,255,0.2)] hover:scale-105 active:translate-y-1 transition-all game-button">
+                        <span class="font-semibold text-lg">?</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="hint-panel" class="hidden w-52 bg-slate-900/95 border border-sky-500/50 rounded-xl p-3 text-left shadow-[0_0_20px_rgba(14,165,233,0.3)] z-[1000] backdrop-blur-sm" style="position:fixed;">
+        <div id="hint-content" class="flex flex-col gap-1"></div>
+    </div>
+
+    <!-- Victory / Battle Log Modal -->
+    <div id="victory-modal" class="hidden fixed inset-0 z-[1001] flex items-center justify-center bg-slate-950/90 backdrop-blur-md">
+        <div class="bg-slate-900 border-2 border-[#00aaff]/40 rounded-3xl p-6 max-w-md w-full mx-4 shadow-[0_0_40px_rgba(0,170,255,0.2)] flex flex-col gap-4" style="max-height:90vh;">
+            <!-- Header -->
+            <div class="text-center">
+                <h3 id="victory-title" class="font-headline-xl text-2xl text-white mb-1">⚔️ Vòng Thắng!</h3>
+                <p id="victory-subtitle" class="text-slate-400 text-xs leading-relaxed">Xem lại những từ bạn đã trả lời đúng:</p>
+            </div>
+
+            <!-- Stats bar -->
+            <div class="flex items-center justify-center">
+                <span id="victory-stats" class="text-xs font-semibold text-[#00aaff] bg-[#00aaff]/10 border border-[#00aaff]/30 px-4 py-1 rounded-full"></span>
+            </div>
+
+            <!-- Legend -->
+            <div class="flex items-center justify-center gap-3 text-xs text-slate-500">
+                <span class="hint-badge-clean">✓ Tự làm</span>
+                <span class="hint-badge-used">💡 Gợi ý</span>
+                <span class="damage-badge">⚔ Sát thương</span>
+            </div>
+
+            <!-- Log List -->
+            <div id="log-list" class="flex flex-col gap-2 overflow-y-auto pr-1" style="max-height: 320px; min-height: 60px;"></div>
+
+            <!-- Next button -->
+            <button id="victory-next-btn" class="w-full py-3 rounded-2xl bg-gradient-to-r from-[#004a74] to-[#00aaff] text-white font-headline-md text-base hover:brightness-110 active:scale-95 transition-all shadow-[0_0_20px_rgba(0,170,255,0.3)]">
+                Vòng tiếp theo →
+            </button>
+        </div>
+    </div>
+
+    <!-- Defeat Modal -->
+    <div id="defeat-modal" class="hidden fixed inset-0 z-[1000] flex items-center justify-center bg-slate-950/85 backdrop-blur-md">
+        <div class="bg-slate-900 border-2 border-red-500/40 rounded-3xl p-8 max-w-md w-full mx-4 shadow-[0_0_35px_rgba(239,68,68,0.3)] text-center animate-fade-in">
+            <span class="material-symbols-outlined text-red-500 text-6xl mb-4 animate-bounce" style='font-variation-settings: "FILL" 1;'>skull</span>
+            <h3 class="font-headline-xl text-2xl text-white mb-2">You Have Been Defeated!</h3>
+            <p class="text-slate-400 text-sm mb-6 leading-relaxed">The monsters of the vault were too strong. Do you want to try again or exit to the dungeon map?</p>
+            <div class="flex items-center justify-center gap-4">
+                <button id="defeat-retry-btn" class="px-6 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-headline-md transition-all shadow-lg shadow-emerald-900/30">
+                    Retry
+                </button>
+                <button id="defeat-exit-btn" class="px-6 py-2.5 rounded-full bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-300 font-headline-md transition-all border border-slate-700">
+                    Exit
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentFloor = parseInt(urlParams.get('floor')) || 1;
+        const currentFloorId = parseInt(urlParams.get('id_floor')) || null;
+
+        let currentFloorNumber = currentFloor;
+        let maxTurns = 3;
+        let monstersPool = [];
+        let currentVocabularyName = `Floor ${currentFloor}`;
+        let floorTypeFloor = 'Normal'; // Normal or Boss
+
+        let vocabulary = [];
+        let normalVocabulary = [];
+        let eliteVocabulary = [];
+        let bossVocabulary = [];
+        
+        let currentItem = null;
+        let currentAnswer = "";
+        let monsterHp = 100;
+        let monsterMaxHp = 100;
+        let monsterAtk = 10;
+        let playerHp = 100;
+        let playerMaxHp = 100;
+        let playerAtk = 20;
+        let timeLeft = 100;
+        let timerInterval = null;
+        let currentTurn = 1;
+        
+        let currentMonsterType = "Normal"; // "Normal", "Elite", "Boss"
+
+        // ===== Battle Log =====
+        let battleLog = [];        // log entries for current turn
+        let floorLog = [];         // accumulated log entries for entire floor (all turns)
+        let hintUsedThisQuestion = false; // track if hint was used for current question
+
+        const questionText = document.getElementById('question-text');
+        const questionType = document.getElementById('question-type');
+        const timerBar = document.getElementById('timer-bar');
+        const monsterHpText = document.getElementById('monster-hp-text');
+        const monsterHpBar = document.getElementById('monster-hp-bar');
+        const monsterNameEl = document.getElementById('monster-name');
+        const input = document.querySelector('input');
+        const ttsBtn = document.getElementById('tts-btn');
+        const playerHpText = document.getElementById('player-hp-text');
+        const playerHpBar = document.getElementById('player-hp-bar');
+
+        function getMonsterImagePath(type, name) {
+            const normalizedType = type === 'Normal' ? 'Normal Monsters' : type === 'Elite' ? 'Elite Monsters' : 'Boss';
+            const fallbackFile = type === 'Normal' ? 'Normal Monster 1.png' : type === 'Elite' ? 'Elite Monster 1.png' : 'Boss 1.png';
+            const knownNameMap = {
+                'Goblin Scout': 'Normal Monster 1.png',
+                'Enchanted Sphinx': 'Elite Monster 1.png',
+                'Vault Guardian': 'Boss 1.png'
+            };
+            const fileName = knownNameMap[name] || fallbackFile;
+            return encodeURI(`../assets/images/Monsters/${normalizedType}/${fileName}`);
+        }
+
+        function chooseMonsterByType(type) {
+            if (!monstersPool || monstersPool.length === 0) return null;
+            const candidates = monstersPool.filter(m => m.type_monster === type);
+            if (candidates.length === 0) {
+                return monstersPool[Math.floor(Math.random() * monstersPool.length)];
+            }
+            return candidates[Math.floor(Math.random() * candidates.length)];
+        }
+
+        async function fetchFloorDetails() {
+            const API_BASE_URL = 'http://localhost:3000/api';
+
+            // Fetch player HP and ATK stats from PostgreSQL
+            const userAccount = JSON.parse(localStorage.getItem('userAccount'));
+            if (userAccount) {
+                try {
+                    const profileRes = await fetch(`${API_BASE_URL}/profile/${userAccount.id_account}`);
+                    if (profileRes.ok) {
+                        const data = await profileRes.json();
+                        if (data.profile) {
+                            playerMaxHp = data.profile.max_hp || 100;
+                            playerHp = data.profile.current_hp || playerMaxHp;
+                            playerAtk = data.profile.atk || 20;
+                            if (playerHp <= 0) {
+                                playerHp = playerMaxHp; // Restore HP for new battle
+                            }
+                            console.log(`Loaded player profile - MaxHP: ${playerMaxHp}, CurrentHP: ${playerHp}, ATK: ${playerAtk}`);
+                        }
+                    }
+                } catch (err) {
+                    console.warn('Unable to load player profile from database, using defaults.', err);
+                }
+            }
+
+            if (!currentFloorId) {
+                if (currentFloor === 1) maxTurns = 3;
+                else if (currentFloor === 2) maxTurns = 5;
+                else if (currentFloor === 3) maxTurns = 1;
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/floor/${currentFloorId}/details`);
+                if (!response.ok) throw new Error('Failed to fetch floor details');
+                const payload = await response.json();
+
+                currentFloorNumber = payload.floor.floor_number || currentFloor;
+                maxTurns = payload.floor.total_turns || maxTurns;
+                monstersPool = payload.monsters || [];
+                currentVocabularyName = payload.floor.vocabulary_name || `Floor ${currentFloorNumber}`;
+                floorTypeFloor = payload.floor.type_floor || 'Normal';
+                console.log('Loaded floor details:', payload.floor, 'monsters:', monstersPool);
+            } catch (err) {
+                console.warn('Unable to load floor details, falling back to defaults.', err);
+                if (currentFloor === 1) maxTurns = 3;
+                else if (currentFloor === 2) maxTurns = 5;
+                else if (currentFloor === 3) maxTurns = 1;
+            }
+        }
+
+        function updateTurnUI() {
+            const turnDisplay = document.getElementById('turn-display');
+            if (turnDisplay) {
+                if (currentFloorNumber === 3) {
+                    turnDisplay.textContent = `BOSS`;
+                } else {
+                    turnDisplay.textContent = `Turn ${currentTurn}/${maxTurns}`;
+                }
+            }
+        }
+
+        function setupTurn() {
+            // Determine monster type based on floor type
+            if (floorTypeFloor === 'Boss') {
+                // Boss floor: 100% Boss
+                currentMonsterType = "Boss";
+            } else {
+                // Normal floor: First turn 100% Normal, then 80% Normal / 20% Elite
+                if (currentTurn === 1) {
+                    currentMonsterType = "Normal";
+                } else {
+                    currentMonsterType = Math.random() < 0.2 ? "Elite" : "Normal";
+                }
+            }
+
+            const chosenMonster = chooseMonsterByType(currentMonsterType);
+            let monsterImgPath = "";
+            let monsterLabel = currentMonsterType;
+
+            if (chosenMonster) {
+                vocabulary = currentMonsterType === "Normal" ? normalVocabulary : currentMonsterType === "Elite" ? eliteVocabulary : bossVocabulary;
+                monsterImgPath = chosenMonster.image_url || "";
+                monsterLabel = `${chosenMonster.name_monster} - ${chosenMonster.type_monster}`;
+                questionType.textContent = monsterLabel;
+                
+                // Synchronize monster stats with DB values
+                monsterMaxHp = chosenMonster.hp_monster || 100;
+                monsterAtk = chosenMonster.atk_monster || 10;
+                console.log('Selected monster:', chosenMonster, 'HP:', monsterMaxHp, 'ATK:', monsterAtk);
+            } else {
+                vocabulary = currentMonsterType === "Normal" ? normalVocabulary : currentMonsterType === "Elite" ? eliteVocabulary : bossVocabulary;
+                monsterImgPath = "";
+                monsterLabel = currentMonsterType === "Boss" ? "BOSS CHALLENGE" : `${currentMonsterType} Monster`;
+                questionType.textContent = monsterLabel;
+                console.log('No pool monster selected, using fallback stats.');
+                
+                // Seeding defaults fallback
+                monsterMaxHp = currentMonsterType === "Boss" ? 250 : (currentMonsterType === "Elite" ? 120 : 50);
+                monsterAtk = currentMonsterType === "Boss" ? 30 : (currentMonsterType === "Elite" ? 18 : 8);
+            }
+
+            const imgEl = document.getElementById('monster-img');
+            if (imgEl) {
+                if (monsterImgPath) {
+                    imgEl.style.display = '';
+                    imgEl.src = monsterImgPath;
+                    imgEl.alt = monsterLabel;
+                } else {
+                    imgEl.style.display = 'none';
+                }
+                imgEl.onerror = () => {
+                    imgEl.style.display = 'none';
+                };
+            }
+
+            if (monsterNameEl) {
+                monsterNameEl.textContent = chosenMonster ? chosenMonster.name_monster : (currentMonsterType === "Boss" ? "BOSS" : `${currentMonsterType} Monster`);
+            }
+
+            monsterHp = monsterMaxHp;
+            updateMonsterHpUI();
+            nextQuestion();
+        }
+
+        // ===== Victory / Battle Log Modal =====
+        function showVictoryLog(isFinalTurn) {
+            const modal = document.getElementById('victory-modal');
+            const logList = document.getElementById('log-list');
+            const victoryTitle = document.getElementById('victory-title');
+            const victorySubtitle = document.getElementById('victory-subtitle');
+            const victoryNextBtn = document.getElementById('victory-next-btn');
+            if (!modal || !logList) return;
+
+            // Set title text
+            if (isFinalTurn) {
+                victoryTitle.textContent = '🏆 Chiến Thắng!';
+                victorySubtitle.textContent = `Bạn đã hoàn thành Tầng ${currentFloorNumber}! Xem lại những từ bạn đã trả lời đúng:`;
+                victoryNextBtn.textContent = 'Tiếp tục →';
+            } else {
+                victoryTitle.textContent = '⚔️ Vòng Thắng!';
+                victorySubtitle.textContent = `Bạn đã đánh bại quái vật vòng ${currentTurn}/${maxTurns}. Xem lại kết quả:`;
+                victoryNextBtn.textContent = `Vòng tiếp theo →`;
+            }
+
+            // Render log entries
+            logList.innerHTML = '';
+            if (battleLog.length === 0) {
+                logList.innerHTML = '<div class="text-slate-500 text-sm italic text-center py-3">Không có câu nào được ghi lại.</div>';
+            } else {
+                battleLog.forEach((entry, idx) => {
+                    const div = document.createElement('div');
+                    div.className = 'log-entry flex items-center justify-between gap-2 bg-slate-800/60 border border-slate-700/50 rounded-xl px-3 py-2';
+                    div.style.animationDelay = (idx * 0.06) + 's';
+
+                    if (entry.type === 'boss') {
+                        // Boss entry: show sentence + damage
+                        div.innerHTML = `
+                            <div class="flex-1 min-w-0">
+                                <div class="text-xs text-slate-400 mb-0.5 truncate">${entry.question || ''}</div>
+                                <div class="font-mono text-sm text-white font-semibold truncate">${entry.answer || ''}</div>
+                            </div>
+                            <span class="damage-badge flex-shrink-0">⚔ -${entry.damage} HP</span>
+                        `;
+                    } else {
+                        // Normal / Elite: show word + hint badge
+                        const badge = entry.hintUsed
+                            ? `<span class="hint-badge-used flex-shrink-0">💡 Gợi ý</span>`
+                            : `<span class="hint-badge-clean flex-shrink-0">✓ Tự làm</span>`;
+                        div.innerHTML = `
+                            <div class="flex-1 min-w-0">
+                                <div class="text-xs text-slate-400 mb-0.5 truncate">${entry.question || ''}</div>
+                                <div class="font-mono text-sm text-white font-semibold">${entry.word || ''}</div>
+                            </div>
+                            ${badge}
+                        `;
+                    }
+                    logList.appendChild(div);
+                });
+            }
+
+            // Summary stats
+            const totalCorrect = battleLog.length;
+            const hintCount = battleLog.filter(e => e.hintUsed).length;
+            const noHintCount = totalCorrect - hintCount;
+            const statsEl = document.getElementById('victory-stats');
+            if (statsEl) {
+                if (currentMonsterType === 'Boss') {
+                    const totalDmg = battleLog.reduce((s, e) => s + (e.damage || 0), 0);
+                    statsEl.textContent = `${totalCorrect} câu đúng • Tổng sát thương: ${totalDmg}`;
+                } else {
+                    statsEl.textContent = `${totalCorrect} câu đúng • ${noHintCount} tự làm • ${hintCount} dùng gợi ý`;
+                }
+            }
+
+            modal.classList.remove('hidden');
+
+            // Button handler
+            const newBtn = victoryNextBtn.cloneNode(true);
+            victoryNextBtn.parentNode.replaceChild(newBtn, victoryNextBtn);
+            newBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+                // Accumulate this turn's log into floorLog before clearing
+                floorLog = floorLog.concat(battleLog);
+                battleLog = [];
+                if (isFinalTurn) {
+                    completeFinalFloor();
+                } else {
+                    currentTurn++;
+                    updateTurnUI();
+                    setupTurn();
+                }
+            });
+        }
+
+        async function completeFinalFloor() {
+            const nextFloor = currentFloorNumber + 1;
+            const API_BASE_URL = 'http://localhost:3000/api';
+            const userAccount = JSON.parse(localStorage.getItem('userAccount'));
+
+            if (userAccount) {
+                // --- Step 1: Call complete-floor API to save words/sentences & award XP ---
+                try {
+                    // Build word entries (normal/elite) and boss sentence entries from floorLog
+                    const wordEntries = floorLog
+                        .filter(e => e.type === 'normal' || e.type === 'elite')
+                        .map(e => ({ word: e.word, hintUsed: !!e.hintUsed }));
+                    const bossEntries = floorLog
+                        .filter(e => e.type === 'boss')
+                        .map(e => ({ sentence: e.question, damage: e.damage || 0 }));
+
+                    const completeRes = await fetch(`${API_BASE_URL}/profile/${userAccount.id_account}/complete-floor`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            words: wordEntries,
+                            boss_sentences: bossEntries
+                        })
+                    });
+                    if (completeRes.ok) {
+                        const xpData = await completeRes.json();
+                        console.log(`Floor completed! XP gained: ${xpData.xp_gained}, New XP: ${xpData.new_xp}, Level: ${xpData.new_level}`);
+                        // Update localStorage so profile page shows fresh data
+                        localStorage.setItem('playerXp', xpData.new_xp);
+                        localStorage.setItem('playerLevel', xpData.new_level);
+                        // Notify parent (index.html) to refresh XP bar immediately
+                        if (window.parent && window.parent !== window) {
+                            window.parent.postMessage({ type: 'xpUpdated', new_xp: xpData.new_xp, new_level: xpData.new_level }, '*');
+                        }
+                    } else {
+                        console.warn('complete-floor API returned non-OK status.');
+                    }
+                } catch (err) {
+                    console.error('Error calling complete-floor API:', err);
+                }
+
+                // --- Step 2: Unlock the next floor ---
+                try {
+                    const floorRes = await fetch(`${API_BASE_URL}/profile/${userAccount.id_account}/floor`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ floor_unlocked: nextFloor })
+                    });
+                    if (floorRes.ok) {
+                        const data = await floorRes.json();
+                        console.log('Progress successfully saved to database:', data);
+                    }
+                } catch (err) {
+                    console.error('Error saving floor progress:', err);
+                }
+
+                localStorage.setItem('unlockedFloors', nextFloor);
+                floorLog = [];
+                window.location.href = 'dungeon.html';
+            } else {
+                const unlockedFloors = parseInt(localStorage.getItem('unlockedFloors')) || 1;
+                if (nextFloor > unlockedFloors) {
+                    localStorage.setItem('unlockedFloors', nextFloor);
+                }
+                floorLog = [];
+                window.location.href = 'dungeon.html';
+            }
+        }
+
+        function advanceTurn() {
+            const isFinalTurn = currentTurn >= maxTurns;
+            showVictoryLog(isFinalTurn);
+        }
+
+        // Fetch vocabulary datasets with dynamic loading & fallbacks
+        const fetchFileWithFallback = (fileName, fallbackName) => {
+            return fetch(`../assets/data/${fileName}`)
+                .then(res => {
+                    if (!res.ok) throw new Error('Not found');
+                    return res.json();
+                })
+                .catch(() => {
+                    return fetch(`../assets/data/${fallbackName}`).then(res => res.json());
+                });
+        };
+
+        fetchFloorDetails().then(() => {
+            return Promise.all([
+                fetchFileWithFallback(`${currentVocabularyName}.json`, 'Floor 1.json'),
+                fetchFileWithFallback(`Elite ${currentFloorNumber}.json`, 'Elite 1.json'),
+                fetchFileWithFallback(`Boss ${currentFloorNumber}.json`, 'Boss 1.json')
+            ]);
+        }).then(([floorData, eliteData, bossData]) => {
+            normalVocabulary = floorData;
+            eliteVocabulary = eliteData;
+            bossVocabulary = bossData;
+            
+            const floorEl = document.getElementById('floor-display-text');
+            if (floorEl) {
+                floorEl.textContent = `Floor ${currentFloorNumber}`;
+            }
+            document.title = `Arcane Quest - Floor ${currentFloorNumber} Battle`;
+            
+            updatePlayerHpUI();
+            updateTurnUI();
+            setupTurn();
+        }).catch(err => {
+            console.error("Error loading vocabulary datasets:", err);
+            if (questionText) {
+                questionText.textContent = "Failed to load vocabulary data.";
+            }
+        });
+
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timeLeft = 100;
+            if (timerBar) timerBar.style.width = '100%';
+            
+            timerInterval = setInterval(() => {
+                timeLeft -= 0.5; // slow down timer slightly for a better user experience (approx 20 seconds total)
+                if (timerBar) {
+                    timerBar.style.width = timeLeft + '%';
+                }
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    // Time ran out: deduct player HP by monster's ATK, update UI, then move to next question
+                    playerHp -= monsterAtk;
+                    if (playerHp < 0) playerHp = 0;
+                    updatePlayerHpUI();
+
+                    if (playerHp <= 0) {
+                        showDefeatModal();
+                        return;
+                    }
+
+                    nextQuestion();
+                }
+            }, 100);
+        }
+
+        // Help / hint panel: show the current word and IPA in a small panel to the right of the help button
+        const helpBtn = document.getElementById('help-btn');
+        const hintPanel = document.getElementById('hint-panel');
+        const hintContent = document.getElementById('hint-content');
+
+        function showHintPanel(item) {
+            if (!item || !hintPanel || !hintContent || !helpBtn) return;
+            
+            let contentHtml = "";
+            if (currentMonsterType === "Boss") {
+                contentHtml = `
+                    <div class="flex items-center justify-between">
+                        <div class="text-[10px] uppercase tracking-[0.2em] text-[#00aaff] font-bold">Gợi ý câu hỏi (Vietnamese)</div>
+                    </div>
+                    <div class="font-sans text-sm text-slate-200 mt-1.5 leading-relaxed">${item.vietnamese || ''}</div>
+                `;
+            } else {
+                contentHtml = `
+                    <div class="flex items-center justify-between">
+                        <div class="text-[10px] uppercase tracking-[0.2em] text-[#00aaff] font-bold">Answer Hint</div>
+                        <button id="tts-hint-btn" class="text-emerald-400 hover:text-emerald-300 hover:scale-110 active:scale-95 transition-all flex items-center justify-center p-1 rounded-full hover:bg-slate-800" aria-label="Listen to word">
+                            <span class="material-symbols-outlined" style='font-variation-settings: "FILL" 1; font-size:16px;'>volume_up</span>
+                        </button>
+                    </div>
+                    <div class="font-sans font-bold text-lg text-white mt-1">${item.word || ''}</div>
+                    <div class="text-xs font-mono text-emerald-400 mt-0.5">${item.ipa || ''}</div>
+                `;
+            }
+
+            hintContent.innerHTML = contentHtml;
+
+            const ttsHintBtn = document.getElementById('tts-hint-btn');
+            if (ttsHintBtn) {
+                ttsHintBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    window.speechSynthesis.cancel();
+                    const speakText = (currentMonsterType === "Boss") ? item.original : item.word;
+                    const utterance = new SpeechSynthesisUtterance(speakText);
+                    utterance.lang = 'en-US';
+                    utterance.rate = 0.8;
+                    const voices = window.speechSynthesis.getVoices();
+                    const enVoice = voices.find(v => v.lang.startsWith('en'));
+                    if (enVoice) utterance.voice = enVoice;
+                    window.speechSynthesis.speak(utterance);
+                });
+            }
+
+            // position panel to the right of the help button
+            const rect = helpBtn.getBoundingClientRect();
+            hintPanel.style.position = 'fixed';
+            hintPanel.style.left = (rect.right + 12) + 'px';
+            hintPanel.style.top = (rect.top + (rect.height / 2)) + 'px';
+            hintPanel.style.transform = 'translateY(-100%)';
+            hintPanel.classList.remove('hidden');
+        }
+
+        function hideHintPanel() {
+            if (!hintPanel || !hintContent) return;
+            hintPanel.classList.add('hidden');
+            hintContent.innerHTML = '';
+        }
+
+        document.addEventListener('click', (event) => {
+            if (!hintPanel || !helpBtn) return;
+            if (helpBtn.contains(event.target)) return;
+            if (!hintPanel.contains(event.target)) {
+                hideHintPanel();
+            }
+        });
+
+        if (helpBtn) {
+            helpBtn.addEventListener('click', () => {
+                if (!currentItem) return;
+                if (hintPanel && !hintPanel.classList.contains('hidden')) {
+                    hideHintPanel();
+                } else {
+                    hintUsedThisQuestion = true; // track hint usage
+                    showHintPanel(currentItem);
+                }
+            });
+        }
+
+        function nextQuestion() {
+            if (!vocabulary || vocabulary.length === 0) return;
+            
+            hideHintPanel();
+            hintUsedThisQuestion = false; // reset hint tracker for new question
+            
+            const randomIndex = Math.floor(Math.random() * vocabulary.length);
+            currentItem = vocabulary[randomIndex];
+            
+            if (currentMonsterType === "Boss") {
+                currentAnswer = currentItem.original;
+                if (questionType) questionType.textContent = "Boss Challenge (Answer in English)";
+                if (questionText) questionText.textContent = `"${currentItem.original}"`;
+                if (ttsBtn) ttsBtn.classList.remove('hidden');
+            } else if (currentMonsterType === "Elite") {
+                // Elite: Always show English definition
+                currentAnswer = currentItem.word;
+                if (questionType) questionType.textContent = `${currentMonsterType} Monster - English Definition`;
+                if (questionText) questionText.textContent = `"${currentItem.english_definition || currentItem.word}"`;
+                if (ttsBtn) ttsBtn.classList.remove('hidden');
+            } else {
+                // Normal: Always show Vietnamese meaning
+                currentAnswer = currentItem.word;
+                if (questionType) questionType.textContent = `${currentMonsterType} Monster - Vietnamese Meaning`;
+                if (questionText) questionText.textContent = `"${currentItem.vietnamese_meaning || currentItem.word}"`;
+                if (ttsBtn) ttsBtn.classList.add('hidden');
+            }
+            
+            if (input) {
+                input.value = '';
+                input.focus();
+            }
+            startTimer();
+            updatePlayerHpUI();
+        }
+
+        function cleanString(str) {
+            return str.toLowerCase()
+                      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g,"")
+                      .replace(/\s+/g, ' ')
+                      .trim();
+        }
+
+        // Input Check
+        async function checkAnswer() {
+            if (!input) return;
+            const answer = input.value.trim();
+            if (!answer) return;
+
+            // Pause countdown timer
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+
+            if (currentMonsterType === "Boss") {
+                // Boss Floor: Evaluate using Gemini via backend endpoint
+                try {
+                    const prevQuestionType = questionType.textContent;
+                    questionType.textContent = "⚡ Evaluating with Gemini... ⚡";
+
+                    const response = await fetch('http://localhost:3000/api/boss/evaluate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            question: currentItem.original,
+                            answer: answer
+                        })
+                    });
+
+                    questionType.textContent = prevQuestionType;
+
+                    if (!response.ok) {
+                        throw new Error('Failed to evaluate answer');
+                    }
+
+                    const data = await response.json();
+                    let damage = data.damage || 0;
+
+                    if (damage > 0) {
+                        // Scale Gemini damage based on player ATK relative to default 20 ATK
+                        damage = Math.round(damage * (playerAtk / 20));
+                        monsterHp -= damage;
+                        // Log boss correct answer
+                        battleLog.push({
+                            type: 'boss',
+                            question: currentItem.original,
+                            answer: answer,
+                            damage: damage
+                        });
+                        updateMonsterHpUI();
+                        if (monsterHp <= 0) {
+                            advanceTurn();
+                        } else {
+                            nextQuestion();
+                        }
+                    } else {
+                        nextQuestion();
+                    }
+                } catch (err) {
+                    console.error('Error evaluating with Gemini:', err);
+                    alert('Lỗi kết nối Gemini API. Đang sử dụng đánh giá mặc định.');
+                    // Fallback comparison
+                    const cleanAns = cleanString(answer);
+                    const target = cleanString(currentAnswer);
+                    if (cleanAns === target) {
+                        monsterHp -= playerAtk;
+                        // Log boss fallback correct answer
+                        battleLog.push({
+                            type: 'boss',
+                            question: currentItem.original,
+                            answer: answer,
+                            damage: playerAtk
+                        });
+                        updateMonsterHpUI();
+                        if (monsterHp <= 0) {
+                            advanceTurn();
+                        } else {
+                            nextQuestion();
+                        }
+                    } else {
+                        nextQuestion();
+                    }
+                }
+            } else {
+                // Normal / Elite floor: standard evaluation
+                const cleanAns = cleanString(answer);
+                const target = cleanString(currentAnswer);
+                
+                if (cleanAns === target) {
+                    monsterHp -= playerAtk;
+                    // Log correct answer with hint info
+                    battleLog.push({
+                        type: currentMonsterType === 'Elite' ? 'elite' : 'normal',
+                        question: questionText ? questionText.textContent.replace(/^"|"$/g, '') : '',
+                        word: currentAnswer,
+                        hintUsed: hintUsedThisQuestion
+                    });
+                    updateMonsterHpUI();
+                    if (monsterHp <= 0) {
+                        advanceTurn();
+                    } else {
+                        nextQuestion();
+                    }
+                } else {
+                    console.log(`Incorrect! The correct answer was "${currentAnswer}".`);
+                    nextQuestion();
+                }
+            }
+        }
+
+        if (input) {
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    checkAnswer();
+                }
+            });
+        }
+
+        const submitBtn = document.getElementById('submit-btn');
+        if (submitBtn) {
+            submitBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                checkAnswer();
+            });
+        }
+
+        // Text-to-Speech (Speech Synthesis) for English Definition / Boss sentence
+        if (ttsBtn) {
+            ttsBtn.addEventListener('click', () => {
+                if (!currentItem) return;
+                const textToSpeak = (currentMonsterType === "Boss") ? currentItem.original : (currentItem.english_definition || currentItem.word);
+                if (!textToSpeak) return;
+
+                window.speechSynthesis.cancel();
+
+                const utterance = new SpeechSynthesisUtterance(textToSpeak);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.8;
+                
+                const voices = window.speechSynthesis.getVoices();
+                const enVoice = voices.find(v => v.lang.startsWith('en'));
+                if (enVoice) utterance.voice = enVoice;
+
+                window.speechSynthesis.speak(utterance);
+            });
+        }
+
+        // Web Speech API: Voice Input
+        const micBtn = document.getElementById('mic-btn');
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition && micBtn) {
+            const recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            let isListening = false;
+            let cancelledByUser = false; // flag to discard result when user manually cancels
+
+            const micIcon = micBtn.querySelector('.material-symbols-outlined');
+
+            recognition.onstart = () => {
+                isListening = true;
+                cancelledByUser = false;
+                micBtn.classList.remove('bg-[#004a74]');
+                micBtn.classList.add('bg-red-600', 'animate-pulse');
+                if (micIcon) micIcon.textContent = 'mic_off';
+            };
+
+            recognition.onend = () => {
+                isListening = false;
+                micBtn.classList.add('bg-[#004a74]');
+                micBtn.classList.remove('bg-red-600', 'animate-pulse');
+                if (micIcon) micIcon.textContent = 'mic';
+            };
+
+            recognition.onresult = (event) => {
+                if (cancelledByUser) return; // discard result if user cancelled
+                const speechResult = event.results[0][0].transcript;
+                if (input) {
+                    let cleanResult = speechResult.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g,"").trim();
+                    input.value = cleanResult;
+                    input.focus();
+                }
+            };
+
+            recognition.onerror = (event) => {
+                console.error("Speech recognition error:", event.error);
+                isListening = false;
+                micBtn.classList.add('bg-[#004a74]');
+                micBtn.classList.remove('bg-red-600', 'animate-pulse');
+                if (micIcon) micIcon.textContent = 'mic';
+                
+                if (event.error === 'not-allowed') {
+                    alert("Lỗi: Không thể truy cập micro. Hãy chắc chắn rằng bạn đang chạy game qua server local (http://localhost:8000) thay vì mở trực tiếp file HTML (file://), và đã cấp quyền truy cập micro cho trang web này.");
+                } else if (event.error === 'no-speech') {
+                    // silently ignore – timer ran out or user cancelled
+                } else if (event.error === 'aborted') {
+                    // intentional abort by user – do nothing
+                } else {
+                    alert("Lỗi nhận dạng giọng nói: " + event.error);
+                }
+            };
+
+            micBtn.addEventListener('click', () => {
+                if (isListening) {
+                    cancelledByUser = true;
+                    recognition.stop();
+                } else {
+                    recognition.start();
+                }
+            });
+        } else if (micBtn) {
+            micBtn.addEventListener('click', () => {
+                alert("Speech recognition is not supported in this browser. Please try Chrome or Edge.");
+            });
+        }
+
+        function updateMonsterHpUI() {
+            if (monsterHpText) {
+                monsterHpText.textContent = `HP ${monsterHp}/${monsterMaxHp}`;
+            }
+            if (monsterHpBar) {
+                const pct = Math.max(0, (monsterHp / monsterMaxHp) * 100);
+                monsterHpBar.style.width = pct + '%';
+            }
+        }
+
+        function updatePlayerHpUI() {
+            if (playerHpText) {
+                playerHpText.textContent = `HP ${playerHp}/${playerMaxHp}`;
+            }
+            if (playerHpBar) {
+                const pct = Math.max(0, (playerHp / playerMaxHp) * 100);
+                playerHpBar.style.width = pct + '%';
+            }
+        }
+
+        function showDefeatModal() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            const defeatModal = document.getElementById('defeat-modal');
+            if (defeatModal) {
+                defeatModal.classList.remove('hidden');
+            }
+        }
+
+        // Setup Defeat Modal buttons
+        const retryBtn = document.getElementById('defeat-retry-btn');
+        const exitBtn = document.getElementById('defeat-exit-btn');
+        const defeatModal = document.getElementById('defeat-modal');
+
+        if (retryBtn) {
+            retryBtn.addEventListener('click', () => {
+                if (defeatModal) {
+                    defeatModal.classList.add('hidden');
+                }
+                playerHp = playerMaxHp;
+                currentTurn = 1;
+                battleLog = [];
+                floorLog = [];
+                hintUsedThisQuestion = false;
+                updatePlayerHpUI();
+                updateTurnUI();
+                setupTurn();
+            });
+        }
+
+        if (exitBtn) {
+            exitBtn.addEventListener('click', () => {
+                window.location.href = 'dungeon.html';
+            });
+        }
+    </script>
+</body>
+</html>

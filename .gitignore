@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist/
+build/
+*.bundle.js
+*.min.js
+
+# IDE and Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Logs
+logs/
+*.log
+
+# CodeGraph (local)
+.codegraph/
+*.db
+
+# Environment
+.env
+.env.*.local

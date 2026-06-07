@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Visual Novel Quest - English Fantasy</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=MedievalSharp&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    
+    <style>
+        body {
+            background-color: #030712;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            height: 100vh;
+            color: #f3f4f6;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .font-medieval { font-family: 'MedievalSharp', cursive; }
+
+        /* VN Screen Wrapper */
+        .vn-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 0.8s ease-in-out;
+        }
+
+        /* Ambient Overlay */
+        .vn-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(3, 7, 18, 0.95) 15%, rgba(3, 7, 18, 0.4) 50%, rgba(3, 7, 18, 0.7) 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Dialogue Box styles */
+        .vn-dialogue-panel {
+            position: relative;
+            z-index: 10;
+            width: calc(100% - 3rem);
+            max-width: 900px;
+            margin: 0 auto 2rem auto;
+            background: rgba(10, 15, 30, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 255, 135, 0.2);
+            border-radius: 24px;
+            padding: 2rem 2.5rem 1.8rem 2.5rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .vn-dialogue-panel:hover {
+            border-color: rgba(0, 255, 135, 0.4);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 255, 135, 0.05);
+        }
+
+        /* Name Tag Box */
+        .name-tag {
+            position: absolute;
+            top: -20px;
+            left: 2rem;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border: 2px solid #00ff87;
+            padding: 0.35rem 1.75rem;
+            border-radius: 12px;
+            color: #00ff87;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(0, 255, 135, 0.15);
+            z-index: 12;
+        }
+
+        /* Character Sprite panel */
+        .character-sprite-container {
+            position: absolute;
+            inset: 0 0 150px 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .sprite-img {
+            max-height: 80%;
+            max-width: 60%;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.8));
+            transition: all 0.5s ease-in-out;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .sprite-img.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Interactive Elements Panel (persuasion checks, etc.) */
+        .vn-interactive-panel {
+            position: relative;
+            z-index: 20;
+            width: calc(100% - 3rem);
+            max-width: 600px;
+            margin: auto auto 2rem auto;
+            background: rgba(15, 23, 42, 0.9);
+            border: 2px solid rgba(0, 255, 135, 0.3);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+            display: none;
+        }
+
+        .clue-pill {
+            background: rgba(82, 162, 255, 0.1);
+            border: 1px solid rgba(82, 162, 255, 0.4);
+            color: #93ccff;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+        .clue-pill.read {
+            border-color: #00ff87;
+            color: #00ff87;
+            background: rgba(0, 255, 135, 0.05);
+        }
+
+        /* Glowing typing indicators */
+        .typewriter-cursor::after {
+            content: '█';
+            animation: blink 0.8s infinite;
+            color: #00ff87;
+            font-size: 0.95rem;
+            margin-left: 2px;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* Top HUD controls */
+        .hud-bar {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            right: 1.5rem;
+            z-index: 30;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="vn-container" id="vn-bg" style="background-image: url('');">
+        <div class="vn-overlay"></div>
+
+        <!-- Top HUD Controls -->
+        <div class="hud-bar">
+            <a href="#" class="back-link font-medieval bg-slate-900/70 backdrop-blur border border-slate-700 px-4 py-2 rounded-xl" onclick="goBack(); return false;">
+                <span class="material-symbols-outlined">arrow_back</span> Exit Quest
+            </a>
+            
+            <div class="flex items-center gap-3 bg-slate-900/70 backdrop-blur border border-slate-700 px-4 py-2 rounded-xl text-xs font-semibold text-slate-300">
+                <span id="quest-hud-title">The Scholar's Beacon</span>
+                <span class="text-slate-600">|</span>
+                <span id="scene-counter" class="text-emerald-400">Loading...</span>
+            </div>
+        </div>
+
+        <!-- Character Sprite Panel -->
+        <div class="character-sprite-container">
+            <img id="npc-sprite" class="sprite-img" src="" alt="NPC Sprite">
+        </div>
+
+        <!-- Interactive Question Panel (Persuasion, Inquiry, Resolution) -->
+        <div class="vn-interactive-panel flex flex-col gap-4 text-white" id="interactive-panel">
+            <h4 class="font-medieval text-xl text-emerald-400 tracking-wide" id="interactive-title">Dialogue Check</h4>
+            <p class="text-xs text-slate-400" id="interactive-instruction">Write an English response to proceed.</p>
+
+            <!-- Question Display Box with TTS -->
+            <div id="interactive-question-box" class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl flex items-center justify-between gap-3">
+                <div class="flex-grow">
+                    <div id="interactive-question-speaker" class="text-xs uppercase tracking-wider text-emerald-400 font-bold mb-1">Speaker</div>
+                    <div id="interactive-question-text" class="text-sm font-medium text-slate-200 leading-relaxed italic">"Question text here..."</div>
+                </div>
+                <button id="interactive-tts-btn" onclick="speakQuestionText()" class="text-sky-400 hover:text-sky-300 hover:scale-110 active:scale-95 transition-all flex items-center justify-center p-2 rounded-full bg-slate-900 border border-slate-800" aria-label="Listen to NPC pronunciation">
+                    <span class="material-symbols-outlined" style='font-variation-settings: "FILL" 1; font-size:20px;'>volume_up</span>
+                </button>
+            </div>
+            
+            <!-- Persuasion / Advice Dialogue Input Box -->
+            <div id="text-input-mode" class="hidden flex flex-col gap-3">
+                <div class="relative">
+                    <textarea id="player-textbox" rows="4" class="w-full bg-slate-950/80 border border-slate-700 rounded-xl text-white font-sans text-sm p-4 pr-12 focus:ring-emerald-500 focus:border-emerald-500 placeholder:text-slate-500" placeholder="Type or speak your response in English..."></textarea>
+                    <button id="stt-mic-btn" onclick="toggleSpeechRecognition()" class="absolute right-3 bottom-3 text-sky-400 hover:text-sky-300 transition-all flex items-center justify-center p-2 rounded-full bg-slate-900 border border-slate-800" aria-label="Use microphone dictation">
+                        <span class="material-symbols-outlined" id="mic-icon" style='font-variation-settings: "FILL" 1; font-size:18px;'>mic</span>
+                    </button>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-[11px] text-slate-400" id="char-limit-text">Tip: Use the mic button to speak your response!</span>
+                    <button id="submit-response-btn" onclick="submitPlayerResponse()" class="px-6 py-2.5 rounded-xl bg-[#00ff87] text-slate-950 font-bold font-medieval hover:brightness-110 active:scale-95 transition-all flex items-center gap-2">
+                        <span>Submit Response</span>
+                        <span class="material-symbols-outlined text-sm">send</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Inquiry Phase: Dynamic Free Chat -->
+            <div id="inquiry-mode" class="hidden flex flex-col gap-3">
+                <div class="bg-blue-950/40 border border-blue-900/40 p-3.5 rounded-xl mb-1">
+                    <p class="text-[11.5px] text-sky-400 font-semibold" id="inquiry-tip">
+                        Tip: Ask her about her life, family, studies, or exams to learn more before counseling her.
+                    </p>
+                </div>
+                
+                <div class="relative">
+                    <input type="text" id="chat-input" onkeydown="if(event.key === 'Enter') askElenaFreeChat()" class="w-full bg-slate-950 border border-slate-700 rounded-xl text-white font-sans text-sm p-4 pr-12 focus:ring-emerald-500 focus:border-emerald-500 placeholder:text-slate-500" placeholder="Type or speak a question to Elena in English...">
+                    <button id="chat-mic-btn" onclick="toggleChatSpeechRecognition()" class="absolute right-3 top-1/2 -translate-y-1/2 text-sky-400 hover:text-sky-300 transition-all flex items-center justify-center p-2 rounded-full bg-slate-900 border border-slate-800" aria-label="Use microphone dictation">
+                        <span class="material-symbols-outlined" id="chat-mic-icon" style='font-variation-settings: "FILL" 1; font-size:18px;'>mic</span>
+                    </button>
+                </div>
+                
+                <div class="flex gap-3">
+                    <button onclick="askElenaFreeChat()" class="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-sm font-bold transition-all text-white">
+                        Ask Elena
+                    </button>
+                    <button onclick="revealElenasProblem()" class="flex-1 py-3 rounded-xl bg-[#00ff87] text-slate-950 hover:brightness-110 font-bold font-medieval text-sm transition-all shadow-lg shadow-emerald-950/20">
+                        Hear Elena's Problem
+                    </button>
+                </div>
+            </div>
+
+            <!-- AI Evaluating Loader -->
+            <div id="ai-loading" class="hidden flex-col items-center justify-center py-6 gap-3">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400"></div>
+                <p class="text-sm text-slate-400">Gemini is assessing your English advice...</p>
+            </div>
+
+            <!-- AI Feedback Panel -->
+            <div id="ai-feedback" class="hidden bg-slate-950/70 border border-emerald-500/30 p-4 rounded-xl flex flex-col gap-2">
+                <div class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-emerald-400">
+                    <span>AI Grade Report</span>
+                    <span id="ai-score" class="text-amber-400 font-medieval text-sm">Score: 85</span>
+                </div>
+                <p class="text-xs text-slate-300 italic" id="ai-feedback-text">Feedback text...</p>
+                <button onclick="dismissFeedback()" class="w-full mt-2 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-medieval text-sm font-bold transition-all">
+                    Continue Adventure
+                </button>
+            </div>
+        </div>
+
+        <!-- Dialogue Box Panel -->
+        <div class="vn-dialogue-panel" id="dialogue-panel" onclick="advanceText()">
+            <div class="name-tag font-medieval" id="speaker-name">Narrator</div>
+            
+            <div class="text-white text-[1.1rem] leading-relaxed font-medium min-h-[5rem] whitespace-pre-wrap" id="dialogue-text">
+                Dialogue content goes here...
+            </div>
+            
+            <!-- Prompt click indicators -->
+            <div class="flex justify-end mt-2 text-xs text-[#00ff87]/60 tracking-wider font-semibold animate-pulse uppercase">
+                <span>Click box to continue &rarr;</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unified Quest Outcome Modal (Success / Failure) -->
+    <div id="vn-outcome-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/95 backdrop-blur-md p-4 animate-fade-in">
+        <!-- Container with dynamic borders based on outcome -->
+        <div id="outcome-card" class="bg-slate-900 border-2 max-w-sm w-full rounded-3xl p-6 text-center flex flex-col gap-5 shadow-2xl relative overflow-hidden transition-all duration-300">
+            <!-- Background Glow Decorator -->
+            <div id="outcome-glow" class="absolute -top-24 -left-24 w-48 h-48 rounded-full blur-3xl opacity-20 pointer-events-none"></div>
+            
+            <!-- Icon with animations -->
+            <div class="flex justify-center">
+                <div id="outcome-icon-container" class="w-20 h-20 rounded-full flex items-center justify-center shadow-lg">
+                    <span id="outcome-icon" class="material-symbols-outlined text-4xl">military_tech</span>
+                </div>
+            </div>
+
+            <!-- Title & Subtitle -->
+            <div class="flex flex-col gap-1">
+                <h3 id="outcome-title" class="font-medieval text-2xl tracking-wide">Quest Clear!</h3>
+                <p id="outcome-subtitle" class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Victory</p>
+            </div>
+            
+            <!-- Description -->
+            <p class="text-slate-300 text-sm leading-relaxed px-2" id="outcome-desc">You completed the story quest successfully!</p>
+            
+            <!-- Rewards details -->
+            <div id="outcome-rewards-box" class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-2xl flex justify-center gap-8">
+                <div class="flex flex-col items-center">
+                    <div class="flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sky-400 text-lg">military_tech</span>
+                        <span class="text-xl text-sky-400 font-bold font-medieval" id="outcome-xp">+0</span>
+                    </div>
+                    <span class="text-[9px] text-slate-500 uppercase font-bold tracking-wider mt-0.5">XP Awarded</span>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex flex-col gap-2.5 mt-2">
+                <button id="outcome-primary-btn" onclick="claimVnRewards()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-bold font-medieval py-3.5 rounded-xl hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-emerald-950/20 flex items-center justify-center gap-2">
+                    <span>Claim Rewards & Exit</span>
+                    <span class="material-symbols-outlined text-sm font-bold">arrow_forward</span>
+                </button>
+                <button id="outcome-secondary-btn" onclick="retryQuest()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold font-medieval py-3 rounded-xl active:scale-95 transition-all border border-slate-700 flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-sm">replay</span>
+                    <span>Try Again</span>
+                </button>
+                <button id="outcome-tertiary-btn" onclick="goBack()" class="w-full text-xs text-slate-400 hover:text-white transition-colors py-1.5 font-semibold">
+                    Exit to Guild Hall
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3000/api';
+        const urlParams = new URLSearchParams(window.location.search);
+        const questParam = urlParams.get('quest') || 'Sub_quest_1';
+
+        let questScript = null;
+        let currentSceneKey = null;
+        let dialogueIndex = 0;
+        let isTyping = false;
+        let typeoutTimeout = null;
+        let currentTextToType = '';
+        
+        // Inquiry tracking
+        let activeInquiryClues = {}; // key: clue_id -> read: true/false
+        let isAskingInquiryClue = false;
+        let lastPanelTransitionTime = 0;
+        
+        // AI assessment variables
+        let aiEvaluationResult = null;
+        let virtualRewards = { gold: 0, xp: 0 };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadQuestScript();
+        });
+
+        async function loadQuestScript() {
+            try {
+                // Dynamically fetch from the JSON files structured in assets/Sub Quest/Scripts
+                const response = await fetch(`../assets/Sub Quest/Scripts/${questParam}.json`);
+                if (!response.ok) throw new Error('Quest script not found');
+                questScript = await response.json();
+                
+                document.title = `${questScript.quest_name} - Visual Novel`;
+                document.getElementById('quest-hud-title').innerText = questScript.quest_name;
+                
+                startQuest();
+            } catch (err) {
+                console.error('Failed to load visual novel script:', err);
+                document.getElementById('dialogue-text').innerText = 'Failed to load visual novel quest script. Verify the asset path.';
+            }
+        }
+
+        function startQuest() {
+            currentSceneKey = questScript.start_scene;
+            loadScene(currentSceneKey);
+        }
+
+        function loadScene(sceneKey) {
+            currentSceneKey = sceneKey;
+            const scene = questScript.scenes[sceneKey];
+            if (!scene) {
+                console.error('Scene not found:', sceneKey);
+                return;
+            }
+
+            // Update Counter
+            document.getElementById('scene-counter').innerText = sceneKey.replace('_', ' ').toUpperCase();
+
+            // Set Background Image
+            const bgEl = document.getElementById('vn-bg');
+            if (scene.display && scene.display.image) {
+                // Handle girl_3.jpg to girl_3.png fix
+                let filename = scene.display.image;
+                if (filename === 'girl_3.jpg') filename = 'girl_3.png';
+                
+                bgEl.style.backgroundImage = `url('../assets/Sub Quest/Images/${filename}')`;
+            }
+
+            // Hide/Show UI Elements based on Type
+            const dialoguePanel = document.getElementById('dialogue-panel');
+            const interactivePanel = document.getElementById('interactive-panel');
+            
+            // Hide interactive panel on scene load
+            interactivePanel.style.display = 'none';
+            dialoguePanel.style.display = '';
+
+            // Set Sprite
+            const spriteImg = document.getElementById('npc-sprite');
+            if (scene.npc && scene.display && scene.display.image && scene.type !== 'intro') {
+                let spriteName = scene.display.image;
+                if (spriteName === 'girl_3.jpg') spriteName = 'girl_3.png';
+                // Only show portrait sprite if it is not the main background image itself
+                if (scene.type === 'interaction' || scene.type === 'quest_core') {
+                    spriteImg.src = `../assets/Sub Quest/Images/${spriteName}`;
+                    spriteImg.classList.add('active');
+                } else {
+                    spriteImg.classList.remove('active');
+                }
+            } else {
+                spriteImg.classList.remove('active');
+            }
+
+            // Execute scene setup based on type
+            if (scene.type === 'intro' || scene.type === 'end_game') {
+                const speaker = scene.type === 'intro' ? 'Narrator' : 'Outcome';
+                setupDialogue(speaker, scene.display.narration_en);
+            } else if (scene.type === 'interaction') {
+                setupDialogue(scene.npc.name_en || scene.npc.name, scene.display.initial_dialogue_en);
+            } else if (scene.type === 'quest_core') {
+                setupDialogue(scene.npc.name, scene.display.initial_greeting_en);
+            }
+        }
+
+        function setupDialogue(speaker, text) {
+            document.getElementById('speaker-name').innerText = speaker;
+            
+            // Clear prior typeout timeouts
+            if (typeoutTimeout) clearTimeout(typeoutTimeout);
+            
+            currentTextToType = text || '';
+            dialogueIndex = 0;
+            isTyping = true;
+            document.getElementById('dialogue-text').innerText = '';
+            
+            typeWriter();
+        }
+
+        function typeWriter() {
+            if (!isTyping) return;
+            if (dialogueIndex < currentTextToType.length) {
+                document.getElementById('dialogue-text').innerText += currentTextToType.charAt(dialogueIndex);
+                dialogueIndex++;
+                typeoutTimeout = setTimeout(typeWriter, 20); // standard typing speed
+            } else {
+                isTyping = false;
+                document.getElementById('dialogue-text').classList.remove('typewriter-cursor');
+            }
+        }
+
+        function advanceText() {
+            // If typing is in progress, skip to the end of the text
+            if (isTyping) {
+                if (typeoutTimeout) clearTimeout(typeoutTimeout);
+                document.getElementById('dialogue-text').innerText = currentTextToType;
+                isTyping = false;
+                return;
+            }
+
+            const scene = questScript.scenes[currentSceneKey];
+            if (!scene) return;
+
+            // If we are currently handling an inquiry clue dialogue, clicking returns to the inquiry panel
+            if (isAskingInquiryClue) {
+                isAskingInquiryClue = false;
+                document.getElementById('dialogue-panel').style.display = 'none';
+                document.getElementById('interactive-panel').style.display = 'block';
+                document.getElementById('inquiry-mode').classList.remove('hidden');
+                lastPanelTransitionTime = Date.now();
+                return;
+            }
+
+            // Normal Scene advance logic
+            if (scene.type === 'intro') {
+                if (scene.navigation && scene.navigation.next_scene) {
+                    loadScene(scene.navigation.next_scene);
+                }
+            } else if (scene.type === 'interaction') {
+                // Trigger the Persuasion Check input area
+                triggerInteractionLogic();
+            } else if (scene.type === 'quest_core') {
+                // Trigger Inquiry Panel
+                triggerInquiryLogic();
+            } else if (scene.type === 'end_game') {
+                // Triggers Quest Success/Fail outcomes screen
+                handleQuestEnd();
+            }
+        }
+
+        // --- Text to Speech (TTS) ---
+        function speakQuestionText() {
+            const text = document.getElementById('interactive-question-text').innerText;
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text.replace(/"/g, ''));
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert('Text-to-speech is not supported in this browser.');
+            }
+        }
+
+        // --- Speech to Text (STT) ---
+        let recognition = null;
+        let isListening = false;
+        let finalTranscript = '';
+
+        function initSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) return null;
+            
+            const rec = new SpeechRecognition();
+            rec.continuous = true;
+            rec.interimResults = true;
+            rec.lang = 'en-US';
+
+            rec.onstart = () => {
+                isListening = true;
+                finalTranscript = document.getElementById('player-textbox').value; // preserve existing text
+                const micBtn = document.getElementById('stt-mic-btn');
+                micBtn.classList.remove('text-sky-400');
+                micBtn.classList.add('text-red-500', 'animate-pulse');
+                document.getElementById('mic-icon').innerText = 'graphic_eq';
+            };
+
+            rec.onend = () => {
+                isListening = false;
+                const micBtn = document.getElementById('stt-mic-btn');
+                micBtn.classList.remove('text-red-500', 'animate-pulse');
+                micBtn.classList.add('text-sky-400');
+                document.getElementById('mic-icon').innerText = 'mic';
+            };
+
+            rec.onresult = (event) => {
+                let interimTranscript = '';
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) {
+                        finalTranscript += event.results[i][0].transcript + ' ';
+                    } else {
+                        interimTranscript += event.results[i][0].transcript;
+                    }
+                }
+                const textbox = document.getElementById('player-textbox');
+                textbox.value = finalTranscript + interimTranscript;
+                textbox.scrollTop = textbox.scrollHeight; // auto scroll
+            };
+
+            rec.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                if (event.error === 'not-allowed') {
+                    alert('Microphone access denied. Please click the site icon/settings in the address bar and allow microphone permissions.');
+                }
+            };
+
+            return rec;
+        }
+
+        function toggleSpeechRecognition() {
+            if (!recognition) {
+                recognition = initSpeechRecognition();
+            }
+            if (!recognition) {
+                alert('Speech recognition is not supported in your browser. Please use Google Chrome or Safari.');
+                return;
+            }
+
+            if (isListening) {
+                recognition.stop();
+            } else {
+                recognition.start();
+            }
+        }
+
+        // --- Persuasion logic ---
+        function triggerInteractionLogic() {
+            const scene = questScript.scenes[currentSceneKey];
+            document.getElementById('dialogue-panel').style.display = 'none';
+            
+            const panel = document.getElementById('interactive-panel');
+            panel.style.display = 'block';
+            lastPanelTransitionTime = Date.now();
+            
+            document.getElementById('interactive-title').innerText = 'Dialogue Persuasion Check';
+            document.getElementById('interactive-instruction').innerText = scene.logic.player_action_required;
+            
+            // Populate Question Display Box
+            document.getElementById('interactive-question-box').classList.remove('hidden');
+            document.getElementById('interactive-question-speaker').innerText = scene.npc.name_en || scene.npc.name;
+            document.getElementById('interactive-question-text').innerText = `"${scene.display.initial_dialogue_en}"`;
+
+            // Set fields to text entry
+            document.getElementById('text-input-mode').classList.remove('hidden');
+            document.getElementById('inquiry-mode').classList.add('hidden');
+            document.getElementById('ai-feedback').classList.add('hidden');
+            document.getElementById('player-textbox').value = '';
+        }
+
+        // --- STT for Chat Input ---
+        let chatRecognition = null;
+        let isChatListening = false;
+        let chatFinalTranscript = '';
+
+        function initChatSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) return null;
+            
+            const rec = new SpeechRecognition();
+            rec.continuous = true;
+            rec.interimResults = true;
+            rec.lang = 'en-US';
+
+            rec.onstart = () => {
+                isChatListening = true;
+                chatFinalTranscript = document.getElementById('chat-input').value;
+                const micBtn = document.getElementById('chat-mic-btn');
+                micBtn.classList.remove('text-sky-400');
+                micBtn.classList.add('text-red-500', 'animate-pulse');
+                document.getElementById('chat-mic-icon').innerText = 'graphic_eq';
+            };
+
+            rec.onend = () => {
+                isChatListening = false;
+                const micBtn = document.getElementById('chat-mic-btn');
+                micBtn.classList.remove('text-red-500', 'animate-pulse');
+                micBtn.classList.add('text-sky-400');
+                document.getElementById('chat-mic-icon').innerText = 'mic';
+            };
+
+            rec.onresult = (event) => {
+                let interimTranscript = '';
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) {
+                        chatFinalTranscript += event.results[i][0].transcript + ' ';
+                    } else {
+                        interimTranscript += event.results[i][0].transcript;
+                    }
+                }
+                const input = document.getElementById('chat-input');
+                input.value = chatFinalTranscript + interimTranscript;
+            };
+
+            rec.onerror = (event) => {
+                console.error('Chat Speech recognition error:', event.error);
+                if (event.error === 'not-allowed') {
+                    alert('Microphone access denied.');
+                }
+            };
+
+            return rec;
+        }
+
+        function toggleChatSpeechRecognition() {
+            if (!chatRecognition) {
+                chatRecognition = initChatSpeechRecognition();
+            }
+            if (!chatRecognition) {
+                alert('Speech recognition is not supported in your browser.');
+                return;
+            }
+
+            if (isChatListening) {
+                chatRecognition.stop();
+            } else {
+                chatRecognition.start();
+            }
+        }
+
+        // --- Inquiry Phase Logic ---
+        function triggerInquiryLogic() {
+            const scene = questScript.scenes[currentSceneKey];
+            document.getElementById('dialogue-panel').style.display = 'none';
+            
+            const panel = document.getElementById('interactive-panel');
+            panel.style.display = 'block';
+            lastPanelTransitionTime = Date.now();
+
+            document.getElementById('interactive-title').innerText = 'Gather Information';
+            document.getElementById('interactive-instruction').innerText = 'Chat with Elena to uncover details before giving advice.';
+
+            // Hide Question Box in Inquiry Menu (since player makes inquiries)
+            document.getElementById('interactive-question-box').classList.add('hidden');
+
+            document.getElementById('text-input-mode').classList.add('hidden');
+            document.getElementById('inquiry-mode').classList.remove('hidden');
+            document.getElementById('ai-feedback').classList.add('hidden');
+
+            // Set TIP
+            if (scene.tip_en) {
+                document.getElementById('inquiry-tip').innerText = scene.tip_en;
+            }
+            document.getElementById('chat-input').value = '';
+        }
+
+        async function askElenaFreeChat() {
+            if (Date.now() - lastPanelTransitionTime < 400) return;
+            const userQuestion = document.getElementById('chat-input').value.trim();
+            if (!userQuestion) {
+                alert('Please type a question to ask Elena!');
+                return;
+            }
+
+            // Show loading during API call
+            document.getElementById('inquiry-mode').classList.add('hidden');
+            document.getElementById('ai-loading').classList.remove('hidden');
+
+            const scene = questScript.scenes[currentSceneKey];
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/visual-novel/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        npc: scene.npc,
+                        user_question: userQuestion
+                    })
+                });
+
+                if (!response.ok) throw new Error('Chat API failed');
+                const data = await response.json();
+
+                // Hide interactive panel, return to dialog box to view Elena's reply
+                document.getElementById('ai-loading').classList.add('hidden');
+                document.getElementById('interactive-panel').style.display = 'none';
+                document.getElementById('dialogue-panel').style.display = 'block';
+
+                isAskingInquiryClue = true; // when clicking the dialog box, it returns to the inquiry menu
+                setupDialogue(scene.npc.name, data.response);
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('ai-loading').classList.add('hidden');
+                document.getElementById('interactive-panel').style.display = 'none';
+                document.getElementById('dialogue-panel').style.display = 'block';
+                isAskingInquiryClue = true;
+                setupDialogue(scene.npc.name, "I... I'm a bit overwhelmed right now. Please ask me again.");
+            }
+        }
+
+        function revealElenasProblem() {
+            if (Date.now() - lastPanelTransitionTime < 400) return;
+            const scene = questScript.scenes[currentSceneKey];
+            if (scene.phases && scene.phases.resolution_phase && scene.phases.resolution_phase.trigger_scene) {
+                loadScene(scene.phases.resolution_phase.trigger_scene);
+            }
+        }
+
+        // --- Resolution phase ---
+        function triggerResolutionPhase() {
+            // Deprecated by dynamic flow, loaded via loadScene('scene_3_resolution')
+        }
+
+        // --- Submission & AI Assessment ---
+        async function submitPlayerResponse() {
+            if (Date.now() - lastPanelTransitionTime < 400) return;
+            const textInput = document.getElementById('player-textbox').value.trim();
+            if (!textInput) {
+                alert('Please type a response first!');
+                return;
+            }
+
+            // Hide textarea, show loader
+            document.getElementById('text-input-mode').classList.add('hidden');
+            document.getElementById('ai-loading').classList.remove('hidden');
+
+            const scene = questScript.scenes[currentSceneKey];
+            
+            // Build body based on scene logic
+            let requestBody = {};
+            if (scene.type === 'interaction') {
+                requestBody = {
+                    npc: scene.npc,
+                    context: scene.display.initial_dialogue_en,
+                    player_response: textInput,
+                    logic: scene.logic
+                };
+            } else {
+                requestBody = {
+                    npc: scene.npc,
+                    context: scene.phases.resolution_phase.npc_statement_en,
+                    player_response: textInput,
+                    logic: {
+                        check_type: 'final_advice'
+                    }
+                };
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/visual-novel/evaluate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestBody)
+                });
+                
+                if (!response.ok) throw new Error('Grading request failed');
+                aiEvaluationResult = await response.json();
+                
+                showAIGradeReport(aiEvaluationResult);
+            } catch (err) {
+                console.error(err);
+                // Simple heuristic offline fallback
+                const fallbackResult = {
+                    score: textInput.split(' ').length > 8 ? 85 : 45,
+                    classification: textInput.split(' ').length > 8 ? 
+                        (scene.type === 'interaction' ? 'on_success' : 'sincere_and_profound') : 
+                        (scene.type === 'interaction' ? 'on_fail' : 'surface_level'),
+                    feedback: 'Assessment sync fallback. Grammar is acceptable.'
+                };
+                showAIGradeReport(fallbackResult);
+            }
+        }
+
+        function showAIGradeReport(result) {
+            aiEvaluationResult = result;
+            document.getElementById('ai-loading').classList.add('hidden');
+            document.getElementById('ai-feedback').classList.remove('hidden');
+
+            document.getElementById('ai-score').innerText = `Score: ${result.score || 0}`;
+            document.getElementById('ai-feedback-text').innerText = result.feedback || 'Good attempt.';
+        }
+
+        function dismissFeedback() {
+            document.getElementById('interactive-panel').style.display = 'none';
+            document.getElementById('dialogue-panel').style.display = 'block';
+
+            const scene = questScript.scenes[currentSceneKey];
+            let target = 'end_failure';
+            
+            if (scene.logic && scene.logic.check_type === 'persuasion_check') {
+                // Persuasion Check outcome
+                if (aiEvaluationResult.classification === 'on_success') {
+                    target = scene.logic.outcomes.on_success.target_scene;
+                    setupDialogue(scene.npc.name_en, scene.logic.outcomes.on_success.npc_response_en);
+                } else {
+                    target = scene.logic.outcomes.on_fail.target_scene;
+                    setupDialogue(scene.npc.name_en, scene.logic.outcomes.on_fail.npc_response_en);
+                }
+            } else {
+                // Resolution advice outcome
+                const cls = aiEvaluationResult.classification;
+                if (cls === 'sincere_and_profound') {
+                    target = 'end_perfect_success';
+                } else if (cls === 'surface_level') {
+                    target = 'end_half_success';
+                } else {
+                    target = 'end_dismissed';
+                }
+                
+                // Show dynamic outcomes dialogues
+                const outcomesNode = questScript.scenes[target];
+                setupDialogue(scene.npc.name, outcomesNode.display.narration_en);
+            }
+            
+            // Set current scene key to target ending so clicking dialog progresses to final outcome
+            currentSceneKey = target;
+        }
+
+        // --- Quest Ending & Reward distribution ---
+        // --- Quest Ending & Reward distribution ---
+        function handleQuestEnd() {
+            let goldReward = 0;
+            let xpReward = 0;
+            let outcomeTitle = '';
+            let outcomeSubtitle = '';
+            let outcomeDesc = '';
+            let isSuccess = false;
+            
+            const cardEl = document.getElementById('outcome-card');
+            const iconContainer = document.getElementById('outcome-icon-container');
+            const iconEl = document.getElementById('outcome-icon');
+            const glowEl = document.getElementById('outcome-glow');
+            const primaryBtn = document.getElementById('outcome-primary-btn');
+            const secondaryBtn = document.getElementById('outcome-secondary-btn');
+            const tertiaryBtn = document.getElementById('outcome-tertiary-btn');
+            const rewardsBox = document.getElementById('outcome-rewards-box');
+
+            if (currentSceneKey === 'end_perfect_success') {
+                goldReward = 0;
+                xpReward = 45;
+                outcomeTitle = "Perfect Success!";
+                outcomeSubtitle = "Quest Completed";
+                outcomeDesc = "Awesome! Your helpful advice gave Elena new hope to keep studying.";
+                isSuccess = true;
+            } else if (currentSceneKey === 'end_half_success') {
+                goldReward = 0;
+                xpReward = 20;
+                outcomeTitle = "Half Success";
+                outcomeSubtitle = "Quest Completed";
+                outcomeDesc = "Elena likes your advice, but she still feels unsure. You completed part of the mission.";
+                isSuccess = true;
+            } else {
+                // Failure
+                goldReward = 0;
+                xpReward = 0;
+                outcomeTitle = "Quest Failed";
+                outcomeSubtitle = "Defeat";
+                isSuccess = false;
+                
+                const scene = questScript.scenes[currentSceneKey];
+                outcomeDesc = scene && scene.display && (scene.display.narration_vi || scene.display.narration_en)
+                    ? (scene.display.narration_en || scene.display.narration_vi)
+                    : "You were unable to guide Elena or convince the villagers. Retrying is highly recommended.";
+            }
+
+            virtualRewards = { gold: goldReward, xp: xpReward };
+            
+            // Stylize based on success/failure
+            if (isSuccess) {
+                // Success Theme (Green/Golden)
+                cardEl.className = "bg-slate-900 border-2 border-emerald-500/40 max-w-sm w-full rounded-3xl p-6 text-center flex flex-col gap-5 shadow-2xl shadow-emerald-950/20 relative overflow-hidden transition-all duration-300";
+                iconContainer.className = "w-20 h-20 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center shadow-lg shadow-emerald-950/20";
+                iconEl.className = "material-symbols-outlined text-4xl text-emerald-400 animate-bounce";
+                iconEl.innerText = "military_tech";
+                glowEl.className = "absolute -top-24 -left-24 w-48 h-48 rounded-full bg-emerald-500 blur-3xl opacity-10 pointer-events-none";
+                
+                document.getElementById('outcome-title').className = "font-medieval text-2xl tracking-wide text-emerald-400";
+                document.getElementById('outcome-subtitle').className = "text-[11px] uppercase tracking-wider text-emerald-500/80 font-bold";
+                
+                primaryBtn.className = "w-full bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-bold font-medieval py-3.5 rounded-xl hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-emerald-950/20 flex items-center justify-center gap-2";
+                primaryBtn.innerHTML = `<span>Claim Rewards & Exit</span><span class="material-symbols-outlined text-sm font-bold">arrow_forward</span>`;
+                primaryBtn.style.display = 'flex';
+                
+                secondaryBtn.style.display = 'none';
+                tertiaryBtn.style.display = 'none';
+                rewardsBox.style.display = 'flex';
+            } else {
+                // Failure Theme (Crimson Red)
+                cardEl.className = "bg-slate-900 border-2 border-red-500/30 max-w-sm w-full rounded-3xl p-6 text-center flex flex-col gap-5 shadow-2xl shadow-red-950/10 relative overflow-hidden transition-all duration-300";
+                iconContainer.className = "w-20 h-20 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center shadow-lg";
+                iconEl.className = "material-symbols-outlined text-4xl text-red-400";
+                iconEl.innerText = "sentiment_very_dissatisfied";
+                glowEl.className = "absolute -top-24 -left-24 w-48 h-48 rounded-full bg-red-500 blur-3xl opacity-10 pointer-events-none";
+                
+                document.getElementById('outcome-title').className = "font-medieval text-2xl tracking-wide text-red-400";
+                document.getElementById('outcome-subtitle').className = "text-[11px] uppercase tracking-wider text-red-500/70 font-bold";
+                
+                primaryBtn.style.display = 'none';
+                
+                secondaryBtn.className = "w-full bg-gradient-to-r from-red-600 to-rose-500 text-white font-bold font-medieval py-3.5 rounded-xl hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-red-950/30 flex items-center justify-center gap-2";
+                secondaryBtn.innerHTML = `<span class="material-symbols-outlined text-sm">replay</span><span>Try Again</span>`;
+                secondaryBtn.style.display = 'flex';
+                
+                tertiaryBtn.style.display = 'inline-block';
+                rewardsBox.style.display = 'none';
+            }
+
+            document.getElementById('dialogue-panel').style.display = 'none';
+            document.getElementById('vn-outcome-modal').classList.remove('hidden');
+
+            document.getElementById('outcome-title').innerText = outcomeTitle;
+            document.getElementById('outcome-subtitle').innerText = outcomeSubtitle;
+            document.getElementById('outcome-desc').innerText = outcomeDesc;
+            document.getElementById('outcome-xp').innerText = `+${xpReward}`;
+        }
+
+        function retryQuest() {
+            window.location.reload();
+        }
+
+        function claimVnRewards() {
+            // 1. Sync cleared status
+            // Quest 1 maps to index 1. Clear it:
+            const currentCleared = parseInt(localStorage.getItem('english_fantasy_subquests_cleared')) || 0;
+            if (currentCleared < 1) {
+                localStorage.setItem('english_fantasy_subquests_cleared', 1);
+            }
+
+            // 2. Add XP
+            let xp = parseInt(localStorage.getItem('playerXp')) || 0;
+            let level = parseInt(localStorage.getItem('playerLevel')) || 1;
+            xp += virtualRewards.xp;
+
+            const xpLevels = { 1: 100, 2: 300, 3: 500, 4: 750, 5: 1000 };
+            const required = xpLevels[level] || 1000;
+            if (xp >= required) {
+                xp -= required;
+                level++;
+            }
+            localStorage.setItem('playerXp', xp);
+            localStorage.setItem('playerLevel', level);
+
+            // Notify parent context (Game hub wrapper)
+            if (window.parent && typeof window.parent.updateXPBar === 'function') {
+                window.parent.postMessage({ type: 'xpUpdated', new_xp: xp, new_level: level }, '*');
+            }
+
+            // Sync database if logged in
+            const userAccount = JSON.parse(localStorage.getItem('userAccount'));
+            if (userAccount) {
+                fetch(`${API_BASE_URL}/profile/${userAccount.id_account}/xp`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ level: level, current_xp: xp })
+                }).catch(err => console.error("Database XP sync failed:", err));
+            }
+
+            goBack();
+        }
+
+        function goBack() {
+            if (window.parent && typeof window.parent.loadPage === 'function') {
+                window.parent.loadPage('sub_quest.html');
+            } else {
+                window.location.href = 'sub_quest.html';
+            }
+        }
+    </script>
+</body>
+</html>

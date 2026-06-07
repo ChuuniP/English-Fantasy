@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Fantasy - Enter the Realm</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=MedievalSharp&display=swap" rel="stylesheet">
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        medieval: ['MedievalSharp', 'cursive'],
+                        cinzel: ['Cinzel', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: radial-gradient(circle at center, #0d1527 0%, #05070f 100%);
+            min-height: 100vh;
+        }
+        /* Glowing text effect */
+        .text-glow-gold {
+            text-shadow: 0 0 10px rgba(255, 190, 26, 0.5), 0 0 20px rgba(255, 190, 26, 0.2);
+        }
+        .text-glow-blue {
+            text-shadow: 0 0 10px rgba(0, 170, 255, 0.5), 0 0 20px rgba(0, 170, 255, 0.2);
+        }
+        /* Custom glassmorphism card */
+        .glass-panel {
+            background: rgba(10, 15, 30, 0.75);
+            backdrop-filter: blur(16px);
+            border: 2px solid rgba(198, 169, 78, 0.25);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        .glass-panel:hover {
+            border-color: rgba(198, 169, 78, 0.4);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(198, 169, 78, 0.1);
+            transition: all 0.5s ease;
+        }
+        /* Golden button styling */
+        .btn-gold {
+            background: linear-gradient(135deg, #c6a94e 0%, #a48434 100%);
+            border: 1px solid #ffe084;
+            color: #0b0f19;
+            font-weight: 700;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(164, 132, 52, 0.3);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-gold:hover {
+            background: linear-gradient(135deg, #ffe084 0%, #c6a94e 100%);
+            box-shadow: 0 6px 20px rgba(198, 169, 78, 0.5), 0 0 15px rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+        .btn-gold:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 10px rgba(164, 132, 52, 0.4);
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center p-4">
+
+    <!-- Game Title / Logo Header -->
+    <div class="text-center mb-8 animate-fade-in">
+        <h1 class="font-medieval text-5xl md:text-6xl text-[#ffe084] text-glow-gold tracking-wider uppercase mb-2">English Fantasy</h1>
+        <p class="font-sans text-xs md:text-sm text-sky-400/80 tracking-[0.3em] uppercase">Master the language of the arcane</p>
+    </div>
+
+    <!-- Login/Register Container Card -->
+    <div class="glass-panel w-full max-w-md p-8 rounded-3xl transition-all duration-300 relative overflow-hidden">
+        
+        <!-- Tab Toggle Buttons -->
+        <div class="flex border-b border-slate-700/60 mb-6">
+            <button id="tab-login" class="flex-1 pb-3 text-center font-medieval text-lg text-white border-b-2 border-[#c6a94e] font-semibold focus:outline-none transition-all">
+                Sign In
+            </button>
+            <button id="tab-register" class="flex-1 pb-3 text-center font-medieval text-lg text-slate-400 border-b-2 border-transparent hover:text-slate-200 focus:outline-none transition-all">
+                Register Character
+            </button>
+        </div>
+
+        <!-- Notification Banner -->
+        <div id="alert-banner" class="hidden mb-4 p-3 rounded-xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm">error</span>
+            <span id="alert-message">Invalid credentials.</span>
+        </div>
+
+        <!-- Authentication Form -->
+        <form id="auth-form" class="space-y-4" onsubmit="handleAuthSubmit(event)">
+            
+            <!-- Gmail Input -->
+            <div>
+                <label for="email" class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Gmail Address</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-500 text-sm">mail</span>
+                    <input id="email" required type="email" placeholder="adventurer@gmail.com" class="w-full bg-slate-950/70 border border-slate-700/50 rounded-xl py-2 pl-10 pr-4 text-white text-sm focus:border-[#c6a94e] focus:ring-1 focus:ring-[#c6a94e] placeholder:text-slate-600 transition-all">
+                </div>
+            </div>
+
+            <!-- Password Input -->
+            <div>
+                <label for="password" class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Password</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-500 text-sm">lock</span>
+                    <input id="password" required type="password" placeholder="••••••••" class="w-full bg-slate-950/70 border border-slate-700/50 rounded-xl py-2 pl-10 pr-4 text-white text-sm focus:border-[#c6a94e] focus:ring-1 focus:ring-[#c6a94e] placeholder:text-slate-600 transition-all">
+                </div>
+            </div>
+
+            <!-- Registration Fields (hidden by default) -->
+            <div id="register-fields" class="hidden space-y-4 pt-1 border-t border-slate-800/40">
+                <!-- Username -->
+                <div>
+                    <label for="username" class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Username (Character Name)</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-500 text-sm">person</span>
+                        <input id="username" type="text" placeholder="e.g. Arthur Pendragon" class="w-full bg-slate-950/70 border border-slate-700/50 rounded-xl py-2 pl-10 pr-4 text-white text-sm focus:border-[#c6a94e] focus:ring-1 focus:ring-[#c6a94e] placeholder:text-slate-600 transition-all">
+                    </div>
+                </div>
+
+                <!-- Gender Select -->
+                <div>
+                    <label for="gender" class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Character Gender</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-500 text-sm">wc</span>
+                        <select id="gender" class="w-full bg-slate-950/70 border border-slate-700/50 rounded-xl py-2 pl-10 pr-4 text-white text-sm focus:border-[#c6a94e] focus:ring-1 focus:ring-[#c6a94e] transition-all">
+                            <option value="Male" class="bg-slate-950 text-white">Male</option>
+                            <option value="Female" class="bg-slate-950 text-white">Female</option>
+                            <option value="Other" class="bg-slate-950 text-white">Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button id="submit-btn" type="submit" class="btn-gold w-full py-3 mt-6 rounded-xl font-medieval text-base uppercase tracking-wider">
+                Enter Realm
+            </button>
+        </form>
+    </div>
+
+    <!-- Decorative Bottom Footer -->
+    <div class="mt-8 text-center text-[10px] text-slate-600 tracking-wider">
+        &copy; 2026 ENGLISH FANTASY. ALL RIGHTS RESERVED.
+    </div>
+
+    <!-- Client-side SPA Auth Simulation -->
+    <script>
+        // Seed default account to simulate real database record
+        const initialAccounts = JSON.parse(localStorage.getItem('gameAccounts') || '[]');
+        const hasDefaultAccount = initialAccounts.some(acc => acc.gmail.toLowerCase() === 'phat78789@gmail.com');
+        if (!hasDefaultAccount) {
+            initialAccounts.push({
+                id_account: 1,
+                gmail: 'phat78789@gmail.com',
+                password: '123456',
+                username: 'Chuunibyou',
+                gender: 'male',
+                created_at: new Date().toISOString()
+            });
+            localStorage.setItem('gameAccounts', JSON.stringify(initialAccounts));
+        } else {
+            // Update existing stored default account to 'Chuunibyou' to match database if it was previously 'ChuuniP'
+            let accountsChanged = false;
+            initialAccounts.forEach(acc => {
+                if (acc.gmail.toLowerCase() === 'phat78789@gmail.com' && acc.username === 'ChuuniP') {
+                    acc.username = 'Chuunibyou';
+                    accountsChanged = true;
+                }
+            });
+            if (accountsChanged) {
+                localStorage.setItem('gameAccounts', JSON.stringify(initialAccounts));
+            }
+        }
+
+        // Seed default profile matching default account
+        const initialProfiles = JSON.parse(localStorage.getItem('gameProfiles') || '[]');
+        const hasDefaultProfile = initialProfiles.some(p => p.id_account === 1);
+        if (!hasDefaultProfile) {
+            initialProfiles.push({
+                id_profile: 1,
+                id_account: 1,
+                level_id: 1,
+                current_xp: 0,
+                current_hp: 100,
+                max_hp: 100,
+                floor_unlocked: 1
+            });
+            localStorage.setItem('gameProfiles', JSON.stringify(initialProfiles));
+        }
+
+        // Also migration check for current logged-in userAccount session
+        const currentUser = JSON.parse(localStorage.getItem('userAccount'));
+        if (currentUser && currentUser.gmail.toLowerCase() === 'phat78789@gmail.com' && currentUser.username === 'ChuuniP') {
+            currentUser.username = 'Chuunibyou';
+            localStorage.setItem('userAccount', JSON.stringify(currentUser));
+        }
+
+        let isLoginMode = true;
+
+        const tabLogin = document.getElementById('tab-login');
+        const tabRegister = document.getElementById('tab-register');
+        const registerFields = document.getElementById('register-fields');
+        const submitBtn = document.getElementById('submit-btn');
+        const authForm = document.getElementById('auth-form');
+        const alertBanner = document.getElementById('alert-banner');
+        const alertMessage = document.getElementById('alert-message');
+
+        const inputEmail = document.getElementById('email');
+        const inputPassword = document.getElementById('password');
+        const inputUsername = document.getElementById('username');
+        const inputGender = document.getElementById('gender');
+
+        // Toggle Modes
+        tabLogin.addEventListener('click', () => {
+            if (isLoginMode) return;
+            isLoginMode = true;
+            
+            tabLogin.classList.add('border-[#c6a94e]', 'text-white');
+            tabLogin.classList.remove('border-transparent', 'text-slate-400');
+            tabRegister.classList.add('border-transparent', 'text-slate-400');
+            tabRegister.classList.remove('border-[#c6a94e]', 'text-white');
+            
+            registerFields.classList.add('hidden');
+            submitBtn.textContent = "Enter Realm";
+            alertBanner.classList.add('hidden');
+
+            inputUsername.removeAttribute('required');
+        });
+
+        tabRegister.addEventListener('click', () => {
+            if (!isLoginMode) return;
+            isLoginMode = false;
+            
+            tabRegister.classList.add('border-[#c6a94e]', 'text-white');
+            tabRegister.classList.remove('border-transparent', 'text-slate-400');
+            tabLogin.classList.add('border-transparent', 'text-slate-400');
+            tabLogin.classList.remove('border-[#c6a94e]', 'text-white');
+            
+            registerFields.classList.remove('hidden');
+            submitBtn.textContent = "Awaken Character";
+            alertBanner.classList.add('hidden');
+
+            inputUsername.setAttribute('required', 'true');
+        });
+
+        function showAlert(msg) {
+            alertMessage.textContent = msg;
+            alertBanner.classList.remove('hidden');
+        }
+
+        // Load remembered email on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const rememberedEmail = localStorage.getItem('rememberedEmail');
+            if (rememberedEmail && inputEmail) {
+                inputEmail.value = rememberedEmail;
+            }
+        });
+
+        const API_BASE_URL = 'http://localhost:3000/api';
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            alertBanner.classList.add('hidden');
+
+            const email = inputEmail.value.trim();
+            const password = inputPassword.value;
+
+            if (isLoginMode) {
+                // Sign In Mode: Call Backend API
+                fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ gmail: email, password: password })
+                })
+                .then(res => {
+                    if (!res.ok) {
+                        return res.json().then(data => { throw new Error(data.error || 'Login failed.'); });
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    localStorage.setItem('userAccount', JSON.stringify(data.account));
+                    localStorage.setItem('userProfile', JSON.stringify(data.profile));
+                    localStorage.setItem('rememberedEmail', data.account.gmail);
+                    
+                    // Local fallback keys for page compatibility
+                    localStorage.setItem('playerLevel', data.profile.level_id);
+                    localStorage.setItem('playerXp', data.profile.current_xp);
+                    localStorage.setItem('unlockedFloors', data.profile.floor_unlocked);
+
+                    window.location.href = 'index.html';
+                })
+                .catch(err => {
+                    showAlert(err.message);
+                });
+            } else {
+                // Register Mode: Call Backend API
+                const username = inputUsername.value.trim();
+                const gender = inputGender.value;
+
+                fetch(`${API_BASE_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        gmail: email,
+                        password: password,
+                        username: username,
+                        gender: gender
+                    })
+                })
+                .then(res => {
+                    if (!res.ok) {
+                        return res.json().then(data => { throw new Error(data.error || 'Registration failed.'); });
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    localStorage.setItem('userAccount', JSON.stringify(data.account));
+                    localStorage.setItem('userProfile', JSON.stringify(data.profile));
+                    localStorage.setItem('rememberedEmail', data.account.gmail);
+                    
+                    // Local fallback keys for page compatibility
+                    localStorage.setItem('playerLevel', data.profile.level_id);
+                    localStorage.setItem('playerXp', data.profile.current_xp);
+                    localStorage.setItem('unlockedFloors', data.profile.floor_unlocked);
+
+                    alert("Character successfully awakened! Entering the realm...");
+                    window.location.href = 'index.html';
+                })
+                .catch(err => {
+                    showAlert(err.message);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
