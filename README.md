@@ -19,6 +19,7 @@ english-fantasy/
 │   ├── html/                   # Static pages and UI templates
 │   ├── css/                    # Global styles and layout rules
 │   ├── js/                     # Client-side JavaScript logic
+│   │   └── ai-agent.js         # AI agent prototype for RAG / LangChain workflows
 │   └── assets/                 # Media and data resources
 │       ├── images/             # Game artwork and icons
 │       └── data/               # Vocabulary, level data, and configuration
@@ -28,7 +29,8 @@ english-fantasy/
 ├── database/                   # Database schema and migration scripts
 ├── scripts/                    # Build / seed / generation utilities
 ├── docs/                       # Design notes and project documentation
-│   └── DESIGN.md
+│   ├── DESIGN.md
+│   └── AI_ARCHITECTURE.md      # AI integration design: RAG, LangChain, Agent
 ├── dev-server.bat              # Windows launch helper
 ├── dev-server.sh               # Unix launch helper
 ├── package.json                # Project metadata and scripts

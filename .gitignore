@@ -40,3 +40,6 @@ logs/
 # Environment
 .env
 .env.*.local
+
+# Local Python environment
+server/.venv/
