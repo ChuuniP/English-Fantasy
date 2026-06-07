@@ -5,7 +5,8 @@
   "main": "src/html/index.html",
   "scripts": {
     "serve": "npx http-server src -p 8000 -c-1",
-    "build": "echo 'Build script can be added here for production'",
+    "build": "node build.js",
+    "vercel-build": "node build.js",
     "lint": "echo 'Linting can be configured here'"
   },
   "keywords": [

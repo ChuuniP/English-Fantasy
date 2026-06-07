@@ -41,5 +41,9 @@ logs/
 .env
 .env.*.local
 
+# Vercel build output
+public/
+.vercel/
+
 # Local Python environment
 server/.venv/
