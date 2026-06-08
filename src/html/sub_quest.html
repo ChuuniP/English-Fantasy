@@ -308,7 +308,7 @@
             }
 
             try {
-                const response = await fetch(`http://localhost:3000/api/profile/${userAccount.id_account}/subquests`);
+                const response = await fetch(`https://english-fantasy.onrender.com/api/profile/${userAccount.id_account}/subquests`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch subquests');
                 }
@@ -517,7 +517,7 @@
             if (isFirstClear && userAccount) {
                 try {
                     // Mark the quest as completed in the database
-                    const response = await fetch(`http://localhost:3000/api/profile/${userAccount.id_account}/complete-subquest`, {
+                    const response = await fetch(`https://english-fantasy.onrender.com/api/profile/${userAccount.id_account}/complete-subquest`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -558,7 +558,7 @@
                     
                     // Write to database if player logged in
                     if (userAccount) {
-                        fetch(`http://localhost:3000/api/profile/${userAccount.id_account}/xp`, {
+                        fetch(`https://english-fantasy.onrender.com/api/profile/${userAccount.id_account}/xp`, {
                             method: 'PUT',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ level: currentLvl, current_xp: currentXp })

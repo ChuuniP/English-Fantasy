@@ -353,6 +353,7 @@
     </div>
 
     <script>
+        const API_BASE_URL = 'https://english-fantasy.onrender.com/api';
         const urlParams = new URLSearchParams(window.location.search);
         const currentFloor = parseInt(urlParams.get('floor')) || 1;
         const currentFloorId = parseInt(urlParams.get('id_floor')) || null;
@@ -420,7 +421,6 @@
         }
 
         async function fetchFloorDetails() {
-            const API_BASE_URL = 'http://localhost:3000/api';
 
             // Fetch player HP and ATK stats from PostgreSQL
             const userAccount = JSON.parse(localStorage.getItem('userAccount'));
@@ -636,7 +636,6 @@
 
         async function completeFinalFloor() {
             const nextFloor = currentFloorNumber + 1;
-            const API_BASE_URL = 'http://localhost:3000/api';
             const userAccount = JSON.parse(localStorage.getItem('userAccount'));
 
             if (userAccount) {
@@ -917,7 +916,7 @@
                     const prevQuestionType = questionType.textContent;
                     questionType.textContent = "⚡ Evaluating with Gemini... ⚡";
 
-                    const response = await fetch('http://localhost:3000/api/boss/evaluate', {
+                    const response = await fetch(`${API_BASE_URL}/boss/evaluate`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
