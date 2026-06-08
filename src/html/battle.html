@@ -353,7 +353,9 @@
     </div>
 
     <script>
-        const API_BASE_URL = 'https://english-fantasy.onrender.com/api';
+        const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3000/api'
+            : 'https://english-fantasy.onrender.com/api';
         const urlParams = new URLSearchParams(window.location.search);
         const currentFloor = parseInt(urlParams.get('floor')) || 1;
         const currentFloorId = parseInt(urlParams.get('id_floor')) || null;
