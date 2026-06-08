@@ -5,7 +5,20 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "vocab:generate": "node vocabGenerator.js",
+    "vocab:floor": "node vocabGenerator.js floor",
+    "vocab:elite": "node vocabGenerator.js elite",
+    "vocab:boss": "node vocabGenerator.js boss",
+    "db:schema-apply": "node schemaManager.js apply",
+    "db:schema-check": "node schemaManager.js check",
+    "db:schema-all": "node schemaManager.js all",
+    "db:migrate": "node migrations.js",
+    "test": "node tests.js all",
+    "test:floor": "node tests.js floor",
+    "test:models": "node tests.js models",
+    "test:db": "node tests.js db",
+    "cleanup": "node cleanup.js --force"
   },
   "dependencies": {
     "cors": "^2.8.5",

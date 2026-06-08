@@ -290,21 +290,45 @@
 
         let clearedCount = 0;
         let selectedQuestId = null;
+        let subquestUnlockedValue = 1;
+        let profileSubquests = [];
 
         document.addEventListener('DOMContentLoaded', () => {
             loadQuestState();
-            renderQuests();
-            updateStatsUI();
         });
 
-        function loadQuestState() {
-            clearedCount = parseInt(localStorage.getItem('english_fantasy_subquests_cleared')) || 0;
-            // Sync mock gold stats
-            const gold = parseInt(localStorage.getItem('playerGold')) || 350;
-            const goldEl = document.getElementById('guild-gold');
-            if (goldEl) {
-                goldEl.innerText = gold;
+        async function loadQuestState() {
+            const userAccount = JSON.parse(localStorage.getItem('userAccount'));
+            if (!userAccount || !userAccount.id_account) {
+                // Fallback to localStorage if not logged in
+                clearedCount = parseInt(localStorage.getItem('english_fantasy_subquests_cleared')) || 0;
+                renderQuests();
+                updateStatsUI();
+                return;
             }
+
+            try {
+                const response = await fetch(`http://localhost:3000/api/profile/${userAccount.id_account}/subquests`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch subquests');
+                }
+                const data = await response.json();
+                subquestUnlockedValue = data.subquest_unlocked || 1;
+                profileSubquests = data.subquests || [];
+                
+                // Calculate clearedCount from the first subquest's progress_stage
+                if (profileSubquests.length > 0) {
+                    clearedCount = profileSubquests[0].progress_stage > 0 ? 1 : 0;
+                } else {
+                    clearedCount = 0;
+                }
+            } catch (error) {
+                console.error('Error loading quest state:', error);
+                clearedCount = parseInt(localStorage.getItem('english_fantasy_subquests_cleared')) || 0;
+            }
+
+            renderQuests();
+            updateStatsUI();
         }
 
         function saveQuestState() {
@@ -333,12 +357,28 @@
                 let badgeText = 'Locked';
                 let isClickable = false;
 
-                if (quest.id <= clearedCount) {
+                // Check if this quest is unlocked in the database
+                const isQuestUnlocked = quest.id <= subquestUnlockedValue;
+                
+                // Get the progress stage for this quest from the database
+                const questProgress = profileSubquests.find(q => q.id_subquest === quest.id);
+                const progressStage = questProgress ? questProgress.progress_stage : 0;
+                const isQuestCompleted = progressStage > 0;
+
+                if (!isQuestUnlocked) {
+                    // Quest is locked
+                    cardStateClass = 'locked-state';
+                    badgeClass = 'badge-locked';
+                    badgeText = 'Locked';
+                    isClickable = false;
+                } else if (isQuestCompleted) {
+                    // Quest is completed
                     cardStateClass = 'completed-state';
                     badgeClass = 'badge-completed';
                     badgeText = 'Completed';
                     isClickable = true;
-                } else if (quest.id === clearedCount + 1) {
+                } else {
+                    // Quest is unlocked but not completed (Active)
                     cardStateClass = 'unlocked-state';
                     badgeClass = 'badge-active';
                     badgeText = 'Active';
@@ -365,7 +405,11 @@
             selectedQuestId = id;
             document.getElementById('modal-title').innerText = quest.title;
             document.getElementById('modal-desc').innerText = quest.desc;
-            document.getElementById('modal-reward-xp').innerText = id <= clearedCount ? `+0 XP` : `+${quest.xp} XP`;
+            
+            const questProgress = profileSubquests.find(q => q.id_subquest === id);
+            const isQuestCompleted = questProgress && questProgress.progress_stage > 0;
+            
+            document.getElementById('modal-reward-xp').innerText = isQuestCompleted ? `+0 XP` : `+${quest.xp} XP`;
             
             const badgeContainer = document.getElementById('modal-badge-container');
             const embarkBtn = document.getElementById('embark-btn');
@@ -375,7 +419,7 @@
             document.getElementById('puzzle-feedback').classList.add('hidden');
             document.getElementById('puzzle-input').value = '';
 
-            if (id <= clearedCount) {
+            if (isQuestCompleted) {
                 // Completed: allow replay for practice, but no extra rewards
                 badgeContainer.innerHTML = `<span class="quest-badge badge-completed">Replay Quest</span>`;
                 embarkBtn.classList.remove('hidden');
@@ -459,17 +503,38 @@
             }
         }
 
-        function triggerRewardScreen() {
+        async function triggerRewardScreen() {
             const quest = questData.find(q => q.id === selectedQuestId);
             if (!quest) return;
 
-            // Update state
-            const isFirstClear = selectedQuestId === clearedCount + 1;
-            if (isFirstClear) {
-                clearedCount++;
-                saveQuestState();
-                updateStatsUI();
-                renderQuests();
+            const userAccount = JSON.parse(localStorage.getItem('userAccount'));
+            const questProgress = profileSubquests.find(q => q.id_subquest === selectedQuestId);
+            const wasCompleted = questProgress && questProgress.progress_stage > 0;
+            
+            // Only reward XP on first clear
+            const isFirstClear = !wasCompleted;
+            
+            if (isFirstClear && userAccount) {
+                try {
+                    // Mark the quest as completed in the database
+                    const response = await fetch(`http://localhost:3000/api/profile/${userAccount.id_account}/complete-subquest`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            file_name: 'Sub_quest_1',
+                            stage_number: 1
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        // Reload quest state from database
+                        await loadQuestState();
+                    } else {
+                        console.error('Failed to mark quest as complete');
+                    }
+                } catch (error) {
+                    console.error('Error updating quest progress:', error);
+                }
 
                 // Sync with parent layout header if inside iframe
                 if (window.parent && typeof window.parent.updateXPBar === 'function') {
@@ -492,7 +557,6 @@
                     window.parent.postMessage({ type: 'xpUpdated', new_xp: currentXp, new_level: currentLvl }, '*');
                     
                     // Write to database if player logged in
-                    const userAccount = JSON.parse(localStorage.getItem('userAccount'));
                     if (userAccount) {
                         fetch(`http://localhost:3000/api/profile/${userAccount.id_account}/xp`, {
                             method: 'PUT',

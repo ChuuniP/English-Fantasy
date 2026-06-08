@@ -165,6 +165,90 @@
             justify-content: space-between;
             align-items: center;
         }
+        .confirm-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(3, 7, 18, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+        .confirm-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .confirm-modal-box {
+            background: rgba(15, 23, 42, 0.95);
+            border: 2px solid rgba(16, 185, 129, 0.2);
+            border-radius: 24px;
+            padding: 2rem;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
+            transform: scale(0.95);
+            transition: transform 0.25s ease;
+        }
+        .confirm-modal-overlay.active .confirm-modal-box {
+            transform: scale(1);
+        }
+        .confirm-modal-icon {
+            color: #10b981;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+        .confirm-modal-title {
+            font-family: 'MedievalSharp', cursive;
+            color: #f8fafc;
+            font-size: 1.45rem;
+            margin: 0 0 0.75rem 0;
+        }
+        .confirm-modal-desc {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0 0 1.5rem 0;
+        }
+        .confirm-modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .confirm-modal-btn {
+            padding: 0.85rem 1.75rem;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+        }
+        .confirm-modal-btn.btn-retreat {
+            background: #10b981;
+            color: #030712;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2);
+        }
+        .confirm-modal-btn.btn-retreat:hover {
+            transform: translateY(-1px);
+        }
+        .confirm-modal-btn.btn-cancel {
+            background: #0f172a;
+            color: #cbd5e1;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+        }
+        .confirm-modal-btn.btn-cancel:hover {
+            background: #111827;
+            color: #f8fafc;
+            transform: translateY(-1px);
+        }
     </style>
 </head>
 <body>
@@ -173,7 +257,7 @@
 
         <!-- Top HUD Controls -->
         <div class="hud-bar">
-            <a href="#" class="back-link font-medieval bg-slate-900/70 backdrop-blur border border-slate-700 px-4 py-2 rounded-xl" onclick="goBack(); return false;">
+            <a href="#" class="back-link font-medieval bg-slate-900/70 backdrop-blur border border-slate-700 px-4 py-2 rounded-xl" onclick="confirmVnExit(); return false;">
                 <span class="material-symbols-outlined">arrow_back</span> Exit Quest
             </a>
             
@@ -328,6 +412,18 @@
                 <button id="outcome-tertiary-btn" onclick="goBack()" class="w-full text-xs text-slate-400 hover:text-white transition-colors py-1.5 font-semibold">
                     Exit to Guild Hall
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="vn-exit-confirm-modal" class="confirm-modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+        <div class="confirm-modal-box">
+            <span class="material-symbols-outlined confirm-modal-icon">warning</span>
+            <h3 class="confirm-modal-title">Exit Visual Novel?</h3>
+            <p class="confirm-modal-desc">If you exit now, your current progress in this visual novel quest will be lost.</p>
+            <div class="confirm-modal-actions">
+                <button type="button" class="confirm-modal-btn btn-retreat" id="confirm-exit-btn">Exit Anyway</button>
+                <button type="button" class="confirm-modal-btn btn-cancel" id="cancel-exit-btn">Stay</button>
             </div>
         </div>
     </div>
@@ -1008,6 +1104,42 @@
             }
 
             goBack();
+        }
+
+        function showVnExitConfirmation(onConfirm) {
+            const modal = document.getElementById('vn-exit-confirm-modal');
+            if (!modal) {
+                if (confirm('If you exit now, your current progress in this visual novel quest will be lost. Do you want to exit?')) {
+                    onConfirm();
+                }
+                return;
+            }
+
+            modal.classList.add('active');
+            const confirmBtn = document.getElementById('confirm-exit-btn');
+            const cancelBtn = document.getElementById('cancel-exit-btn');
+
+            const cleanup = () => {
+                modal.classList.remove('active');
+                confirmBtn.removeEventListener('click', handleConfirm);
+                cancelBtn.removeEventListener('click', handleCancel);
+            };
+
+            const handleConfirm = () => {
+                cleanup();
+                onConfirm();
+            };
+
+            const handleCancel = () => {
+                cleanup();
+            };
+
+            confirmBtn.addEventListener('click', handleConfirm);
+            cancelBtn.addEventListener('click', handleCancel);
+        }
+
+        function confirmVnExit() {
+            showVnExitConfirmation(goBack);
         }
 
         function goBack() {

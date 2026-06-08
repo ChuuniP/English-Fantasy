@@ -41,7 +41,7 @@ app.post('/api/auth/register', async (req, res) => {
 
     // Insert profile linked to account
     const newProfileResult = await db.query(
-      'INSERT INTO profiles (id_account, level_id, current_xp, current_hp, max_hp, atk, floor_unlocked, dungeon_unlocked) VALUES ($1, $2, 0, 100, 100, 20, 1, 1) RETURNING *',
+      'INSERT INTO profiles (id_account, level_id, current_xp, current_hp, max_hp, atk, floor_unlocked, dungeon_unlocked, subquest_unlocked) VALUES ($1, $2, 0, 100, 100, 20, 1, 1, 1) RETURNING *',
       [newAccount.id_account, defaultLevelId]
     );
     const newProfile = newProfileResult.rows[0];
@@ -100,7 +100,8 @@ app.post('/api/auth/login', async (req, res) => {
         max_hp: p.max_hp,
         atk: p.atk,
         floor_unlocked: p.floor_unlocked,
-        dungeon_unlocked: p.dungeon_unlocked
+        dungeon_unlocked: p.dungeon_unlocked,
+        subquest_unlocked: p.subquest_unlocked
       };
     } else {
       // If profile missing for some reason, create one
@@ -119,7 +120,8 @@ app.post('/api/auth/login', async (req, res) => {
         max_hp: 100,
         atk: 20,
         floor_unlocked: 1,
-        dungeon_unlocked: 1
+        dungeon_unlocked: 1,
+        subquest_unlocked: 1
       };
     }
 
@@ -167,7 +169,8 @@ app.get('/api/profile/:id_account', async (req, res) => {
         max_hp: profileRes.rows[0].max_hp,
         atk: profileRes.rows[0].atk,
         floor_unlocked: profileRes.rows[0].floor_unlocked,
-        dungeon_unlocked: profileRes.rows[0].dungeon_unlocked
+        dungeon_unlocked: profileRes.rows[0].dungeon_unlocked,
+        subquest_unlocked: profileRes.rows[0].subquest_unlocked
       } : null
     });
   } catch (err) {
@@ -224,6 +227,30 @@ app.put('/api/profile/:id_account/dungeon', async (req, res) => {
   }
 });
 
+// 4.2 Update Profile Unlocked Subquest
+app.put('/api/profile/:id_account/subquest', async (req, res) => {
+  const { id_account } = req.params;
+  const { subquest_unlocked } = req.body;
+
+  if (subquest_unlocked === undefined) {
+    return res.status(400).json({ error: 'Please provide subquest_unlocked value.' });
+  }
+
+  try {
+    const result = await db.query(
+      'UPDATE profiles SET subquest_unlocked = $1 WHERE id_account = $2 RETURNING *',
+      [subquest_unlocked, id_account]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Profile not found.' });
+    }
+    res.json({ message: 'Subquest unlocked status updated.', profile: result.rows[0] });
+  } catch (err) {
+    console.error('Update subquest error:', err);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
+
 // 4.2 Get Dungeon Details
 app.get('/api/dungeon/:id_dungeon', async (req, res) => {
   const { id_dungeon } = req.params;
@@ -246,6 +273,162 @@ app.get('/api/dungeons', async (req, res) => {
     res.json(dungeonsRes.rows);
   } catch (err) {
     console.error('Fetch dungeons list error:', err);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
+
+// 5. Get All Sub Quests and Stage XP Data
+app.get('/api/subquests', async (req, res) => {
+  try {
+    const subquestsRes = await db.query(
+      `SELECT id_subquest, id_profile, file_name, progress_stage, stage_xp
+       FROM sub_quests
+       ORDER BY id_subquest ASC`
+    );
+    res.json(subquestsRes.rows);
+  } catch (err) {
+    console.error('Fetch subquests error:', err);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
+
+// 5.0 Get Subquests for a specific account (returns unlocked/completed per stage)
+app.get('/api/profile/:id_account/subquests', async (req, res) => {
+  const { id_account } = req.params;
+  try {
+    const profileRes = await db.query('SELECT id_profile, subquest_unlocked FROM profiles WHERE id_account = $1', [id_account]);
+    if (profileRes.rows.length === 0) {
+      return res.status(404).json({ error: 'Profile not found.' });
+    }
+    const { id_profile, subquest_unlocked } = profileRes.rows[0];
+
+    const subquestsRes = await db.query(
+      `SELECT id_subquest, file_name, progress_stage, stage_xp
+       FROM sub_quests
+       WHERE id_profile = $1
+       ORDER BY id_subquest ASC`,
+      [id_profile]
+    );
+
+    const subquests = subquestsRes.rows.map(s => {
+      const stageXpArray = Array.isArray(s.stage_xp) ? s.stage_xp : JSON.parse(s.stage_xp || '[]');
+      const stages = stageXpArray.map((xp, idx) => {
+        const stageNumber = idx + 1;
+        return {
+          stage_number: stageNumber,
+          xp,
+          unlocked: stageNumber <= (subquest_unlocked || 1),
+          completed: s.progress_stage >= stageNumber
+        };
+      });
+      return {
+        id_subquest: s.id_subquest,
+        file_name: s.file_name,
+        progress_stage: s.progress_stage,
+        stage_xp: stageXpArray,
+        stages,
+        completed: s.progress_stage >= stageXpArray.length
+      };
+    });
+
+    res.json({ subquest_unlocked: subquest_unlocked || 1, subquests });
+  } catch (err) {
+    console.error('Fetch profile subquests error:', err);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
+
+// 5.1 Complete a Subquest Stage and Award XP
+app.post('/api/profile/:id_account/complete-subquest', async (req, res) => {
+  const { id_account } = req.params;
+  const { file_name, stage_number } = req.body;
+
+  if (!file_name || stage_number === undefined) {
+    return res.status(400).json({ error: 'Please provide file_name and stage_number.' });
+  }
+
+  try {
+    const profileRes = await db.query('SELECT id_profile, current_xp, level_id, subquest_unlocked FROM profiles WHERE id_account = $1', [id_account]);
+    if (profileRes.rows.length === 0) {
+      return res.status(404).json({ error: 'Profile not found.' });
+    }
+    const { id_profile, current_xp, level_id, subquest_unlocked: profileSubquestUnlocked } = profileRes.rows[0];
+
+    const defaultStageXpForFile = {
+      'Sub_quest_1': [10, 10, 10]
+    };
+    const defaultStageXp = defaultStageXpForFile[file_name] || [10, 10, 10];
+
+    let subquestRes = await db.query('SELECT * FROM sub_quests WHERE id_profile = $1 AND file_name = $2', [id_profile, file_name]);
+    if (subquestRes.rows.length === 0) {
+      await db.query(
+        `INSERT INTO sub_quests (id_profile, file_name, progress_stage, stage_xp)
+         VALUES ($1, $2, 0, $3::jsonb)`,
+        [id_profile, file_name, JSON.stringify(defaultStageXp)]
+      );
+      subquestRes = await db.query('SELECT * FROM sub_quests WHERE id_profile = $1 AND file_name = $2', [id_profile, file_name]);
+    }
+
+    const subquest = subquestRes.rows[0];
+    const stageXpArray = Array.isArray(subquest.stage_xp) ? subquest.stage_xp : JSON.parse(subquest.stage_xp || '[]');
+    const stageIndex = stage_number - 1;
+    if (stageIndex < 0 || stageIndex >= stageXpArray.length) {
+      return res.status(404).json({ error: 'Subquest stage not found.' });
+    }
+
+    const xpGained = stageXpArray[stageIndex] || 0;
+    const newXp = current_xp + xpGained;
+
+    const levelsRes = await db.query('SELECT id_level, level_number, required_xp FROM levels ORDER BY level_number ASC');
+    const allLevels = levelsRes.rows;
+    let newLevelId = level_id;
+    let newLevelNumber = 1;
+    for (const lvl of allLevels) {
+      if (newXp >= lvl.required_xp) {
+        newLevelId = lvl.id_level;
+        newLevelNumber = lvl.level_number;
+      }
+    }
+
+    const completed = stage_number >= stageXpArray.length;
+
+    // Ensure progress_stage moves forward for the completed stage
+    await db.query(
+      'UPDATE sub_quests SET progress_stage = GREATEST(progress_stage, $1) WHERE id_subquest = $2',
+      [stage_number, subquest.id_subquest]
+    );
+
+    // Update XP and level
+    await db.query('UPDATE profiles SET current_xp = $1, level_id = $2 WHERE id_profile = $3', [newXp, newLevelId, id_profile]);
+
+    // If completing a stage should unlock the next subquest stage, update profiles.subquest_unlocked
+    // Example: if profile.subquest_unlocked = 1 and user completes stage 1, set subquest_unlocked to 2
+    let newSubquestUnlocked = profileSubquestUnlocked || 1;
+    if (stage_number < stageXpArray.length) {
+      newSubquestUnlocked = Math.max(newSubquestUnlocked, stage_number + 1);
+    }
+
+    if (newSubquestUnlocked !== profileSubquestUnlocked) {
+      await db.query('UPDATE profiles SET subquest_unlocked = $1 WHERE id_profile = $2', [newSubquestUnlocked, id_profile]);
+      // Keep progress_stage at least as high as completed stages implied by subquest_unlocked
+      const impliedProgress = Math.max(0, newSubquestUnlocked - 1);
+      await db.query('UPDATE sub_quests SET progress_stage = GREATEST(progress_stage, $1) WHERE id_subquest = $2', [impliedProgress, subquest.id_subquest]);
+    }
+
+    res.json({
+      message: 'Subquest stage completed. XP awarded.',
+      xp_gained: xpGained,
+      new_xp: newXp,
+      new_level: newLevelNumber,
+      subquest: {
+        file_name,
+        stage_number,
+        completed
+      },
+      subquest_unlocked: newSubquestUnlocked
+    });
+  } catch (err) {
+    console.error('Complete subquest error:', err);
     res.status(500).json({ error: 'Internal server error.' });
   }
 });
