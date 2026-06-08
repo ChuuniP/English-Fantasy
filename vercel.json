@@ -4,5 +4,10 @@
       "source": "/",
       "destination": "/html/index.html"
     }
+    ,
+    {
+      "source": "/(index|login|profile|dashboard|dungeon|battle|sub_quest|visual_novel).html",
+      "destination": "/html/$1.html"
+    }
   ]
 }
